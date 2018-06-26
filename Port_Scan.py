@@ -105,10 +105,24 @@ def WebServer(ip,ports):
 
 scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to go into webs server test mode (test)? ")
 # FOR TESTING
-scan = 'ip'
+# scan = 'ip'
 # scan = 'name'
+scan = 'test'
+print(scan)
 
-if scan == 'name':
+# Website testing
+if scan == "test":
+    # Old single-website testing
+    code = input("Please input the status code that you would like to test! (e.g. 200) ")
+    TestSocket = "https://httpstat.us/" + "{}".format(code)
+    print("Testing code {}".format(code) + " at website: " + TestSocket)
+    response = requests.get(TestSocket, timeout=5)
+    # print(response)
+    print("This is the response: ", response, "\nSuccess!!")
+    sys.exit()
+
+
+elif scan == 'name':
     name = input("What is the name of the website that you would like to scan? (e.g. google.com) ")
     # name = 'brackets.io'
     name = 'secdaemons.org'
@@ -117,6 +131,8 @@ if scan == 'name':
     ip = socket.gethostbyname(name)
     ip = ip.split()
     print(ip)
+
+
 
 elif scan == 'ip':
     # ip = input("Input IP: ")
@@ -136,7 +152,8 @@ elif scan == 'ip':
         # ip = '140.192.40.120/30'
         # ip = '146.55.65.186/32' # DePaul iD Lab
         # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found"
-
+    else:
+        pass
 '''
 NOTE: Needs to be fixed
     elif ipinput == 'text':
@@ -146,17 +163,9 @@ NOTE: Needs to be fixed
         print(ip)
         # ip = '140.192.40.120/32'
         # print("File Test")
-
-# The test can only be successful...
-elif scan == "test":
-    code = input("Please input the status code that you would like to test! (e.g. 200) ")
-    TestSocket = "https://httpstat.us/" + "{}".format(code)
-    print("Testing code {}".format(code) + " at website: " + TestSocket)
-    response = requests.get(TestSocket, timeout=5)
-    # print(response)
-    print("This is the response: ", response, "\nSuccess!!")
-    sys.exit()
 '''
+
+
 
 ans1 = input("Would you like to scan single ports (single) or a range of ports (range)? ")
 # FOR TESTING
