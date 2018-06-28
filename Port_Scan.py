@@ -112,6 +112,7 @@ print(scan)
 
 # Website testing
 if scan == "test":
+    '''
     # Old single-website testing
     code = input("Please input the status code that you would like to test! (e.g. 200) ")
     TestSocket = "https://httpstat.us/" + "{}".format(code)
@@ -119,6 +120,15 @@ if scan == "test":
     response = requests.get(TestSocket, timeout=5)
     # print(response)
     print("This is the response: ", response, "\nSuccess!!")
+    sys.exit()
+    '''
+
+    # Multi-website and directory testing
+    website = input("Please input the website that you would like to scan! (e.g. google.com) ")
+    TestSocket = "https://" + website
+    print("Testing {}!".format(website))
+    response = requests.get(TestSocket, timeout=5)
+    print("This is the response: ", response, ".")
     sys.exit()
 
 
