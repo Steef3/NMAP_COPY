@@ -123,10 +123,11 @@ if scan == "test":
     sys.exit()
     '''
 
-    # Multi-website and directory testing
+    # Multi-website and single directory testing
     website = input("Please input the website that you would like to scan! (e.g. google.com) ")
-    TestSocket = "https://" + website
-    print("Testing {}!".format(website))
+    directory = input("Please input the directory that you would like to scan (leave blank, if you want to scan the main page)! (.e.g about) ")
+    TestSocket = "https://" + website + "/" + directory
+    print("Testing {}/{}!".format(website,directory))
     response = requests.get(TestSocket, timeout=5)
     print("This is the response: ", response, ".")
     sys.exit()
