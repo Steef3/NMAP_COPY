@@ -125,11 +125,18 @@ if scan == "test":
 
     # Multi-website and single directory testing
     website = input("Please input the website that you would like to scan! (e.g. google.com) ")
-    directory = input("Please input the directory that you would like to scan (leave blank, if you want to scan the main page)! (.e.g about) ")
-    TestSocket = "https://" + website + "/" + directory
-    print("Testing {}/{}!".format(website,directory))
-    response = requests.get(TestSocket, timeout=5)
-    print("This is the response: ", response, ".")
+    website = "depaul.edu"
+    directories = input("Please input the directory that you would like to scan divided by commas! (.e.g about,/,support,test) ")
+    directories = "about,/,support,test"
+    print(directories)
+    directories = directories.split(",")
+    print(directories)
+    for directory in directories:
+        TestSocket = "https://" + website + "/" + directory
+        print("Testing {}/{}!".format(website,directory))
+        response = requests.get(TestSocket, timeout=5)
+        print("This is the response: ", response, ".")
+    print("Testing complete. Exiting.")
     sys.exit()
 
 
