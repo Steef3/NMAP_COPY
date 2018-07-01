@@ -126,11 +126,15 @@ if scan == "test":
     # Multi-website and single directory testing
     website = input("Please input the website that you would like to scan! (e.g. google.com) ")
     website = "depaul.edu"
-    directories = input("Please input the directory that you would like to scan divided by commas! (.e.g about,/,support,test) ")
+    directories = input("Please input the directories for the first level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
     directories = "about,/,support,test"
     print(directories)
     directories = directories.split(",")
     print(directories)
+    # directories_2 = input("Please input the directories for the second level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
+    # print(directories_2)
+    # directories = directories_2.split(",")
+    # print(directories_2)
     for directory in directories:
         TestSocket = "https://" + website + "/" + directory
         print("Testing {}/{}!".format(website,directory))
