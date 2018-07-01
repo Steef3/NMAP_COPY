@@ -2,7 +2,9 @@
 
 '''
 #TO DO
-Cleanup code
+Make code super-clean (haha)
+FIXED: Initial cleanup for code
+Add a default for every input that is asked from the user
 Add function to the end of every task to ask, whether the user wants to do anything else
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
 Input via text file/list of IPs.
@@ -16,6 +18,7 @@ Web requests will be sent to every port. Needs to be fixed.
 FIXED: Fix timeout default for webrequests.
 Program closes out, if no valid response from a web request.
 Open port but NO web server leads to exception of web server AND ports... (should only be for web)
+Fix global ip in scan = 'name' if-statement
 '''
 
 import socket, ipaddress, requests, sys, bs4
@@ -32,17 +35,14 @@ def WebServer(ip,ports):
 
     try:
         response = requests.get(WebSocket,timeout=int(timeout_web))
-
         print("There is a WebServer at {} on port {}.".format(str(ip),str(ports)))
-
         headers = response.headers
-
         print("This is a(n) {}".format(headers['Server']),"server.")
 
         if response.status_code == 200:
             print("Code: 200, Ok.")
             html = bs4.BeautifulSoup(response.text, "html.parser")
-            print("This is the title of the page: ", html.title )
+            print("Page Title: ", html.title )
         elif response.status_code == 201:
             print("Code: 201, Created.")
         elif response.status_code == 204:
@@ -74,20 +74,20 @@ def WebServer(ip,ports):
     # For more info on status codes, please see http://www.restapitutorial.com/httpstatuscodes.html.
 
 
-scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to go into webs server test mode (test)? ")
+scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
 # FOR TESTING
 # scan = 'ip'
 # scan = 'name'
-scan = 'test'
+scan = 'directory'
 print(scan)
 
 # Website testing
-if scan == "test":
-    # Multi-website and single directory testing
+if scan == "directory":
+    # Multi-website and 2-level directory testing
     website = input("Please input the website that you would like to scan! (e.g. google.com) ")
-    website = "depaul.edu"
+    website = "secdaemons.org"
     directories = input("Please input the directories for the first level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
-    directories = "about,/,support,test"
+    directories = "about,/,support,test,dokuwiki"
     print(directories)
     directories = directories.split(",")
     print(directories)
@@ -98,7 +98,7 @@ if scan == "test":
     print(level_2)
     if level_2 == 'yes':
         directories2 = input("Please input the directories for the second level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
-        directories2 = 'about,/,support,test'
+        directories2 = 'about,/,support,test,dokuwiki'
         print(directories2)
         directories2 = directories2.split(",")
         print(directories2)
@@ -116,7 +116,6 @@ if scan == "test":
     print("Testing complete. Exiting.")
     sys.exit()
 
-
 elif scan == 'name':
     name = input("What is the name of the website that you would like to scan? (e.g. google.com) ")
     # name = 'brackets.io'
@@ -126,8 +125,6 @@ elif scan == 'name':
     ip = socket.gethostbyname(name)
     ip = ip.split()
     print(ip)
-
-
 
 elif scan == 'ip':
     # ip = input("Input IP: ")
@@ -156,8 +153,6 @@ NOTE: Needs to be fixed
         # ip = '140.192.40.120/32'
         # print("File Test")
 '''
-
-
 
 ans1 = input("Would you like to scan single ports (single) or a range of ports (range)? ")
 # FOR TESTING
