@@ -11,7 +11,7 @@ Make directory responses show up cleaner in the terminal/independent of how long
 Input via text file/list of IPs.
 Input cleaning for website entries (DNS), e.g. google.co is not possible
 Test mode for any website and directory
-RangePorts not working, when inputting 443-443, for example.
+Bypassed: RangePorts not working, when inputting 443-443, for example.
 Fixed: RangePorts not working and taking forever in any case.
 s.connect not working, if put into a function.
 Control+C not immediately exiting.
@@ -177,9 +177,9 @@ if ans1 == 'single':
     print("SinglePorts: {}\n".format(ports))
 
 elif ans1 == 'range':
-    ports_range = input("Please enter a range of ports (e.g. 100-500) ")
+    ports_range = input("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please input like 443-444 to scan 443. ")
     # FOR TESTING
-    ports_range = '443-443'
+    ports_range = '443-444'
     # ports_range = '442-444'
     # ports_range = '0-65536'
     # ports_range = '0-100'
