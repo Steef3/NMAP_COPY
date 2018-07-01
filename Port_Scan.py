@@ -2,6 +2,7 @@
 
 '''
 #TO DO
+Cleanup code
 Add function to the end of every task to ask, whether the user wants to do anything else
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
 Input via text file/list of IPs.
@@ -18,33 +19,8 @@ Open port but NO web server leads to exception of web server AND ports... (shoul
 '''
 
 import socket, ipaddress, requests, sys, bs4
-# import httplib2
-
-'''
-# THIS WORKS
-WebSocket = "http://127.0.0.1:8000"
-print(WebSocket)
-response = requests.get(WebSocket,timeout=10)
-# print("response")
-# print(response)
-'''
 
 def WebServer(ip,ports):
-    # print("WebTest 1")
-
-    '''
-    # NOT WORKING
-    h = httplib2.Http()
-    resp, content = h.request('http://{}:{}'.format(str(ip),str(ports)),"GET")
-    print(resp.status)
-
-    # THIS WORKS
-    #WebSocket = "http://127.0.0.1:8000"
-    #WebSocket = "http://{}:{}".format(str(ip),str(ports))
-    print(WebSocket)
-    '''
-
-    # YES IT IS WORKING!! FINALLY!!
     WebSocket = "http://{}:{}".format(str(j),str(i))
     timeout_web = input("What would you like the timeout to be for this web request in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
     if timeout_web == '':
@@ -52,25 +28,18 @@ def WebServer(ip,ports):
     else:
         timeout_web = timeout_web
 
-    # print(j + ":" + i)
     print("Sending WebRequest to " + WebSocket + " with a timeout of {}.".format(timeout_web))
 
-    # print(headers)
-    # print(response)
-    # print(response.content)
-    # print("WebTest 2")
     try:
         response = requests.get(WebSocket,timeout=int(timeout_web))
-        # print(response.headers)
+
         print("There is a WebServer at {} on port {}.".format(str(ip),str(ports)))
 
         headers = response.headers
-        # print("Header Test")
+
         print("This is a(n) {}".format(headers['Server']),"server.")
-        # print(response.content)
+
         if response.status_code == 200:
-            # headers = response.header
-            # print(headers['Server'])
             print("Code: 200, Ok.")
             html = bs4.BeautifulSoup(response.text, "html.parser")
             print("This is the title of the page: ", html.title )
@@ -114,17 +83,6 @@ print(scan)
 
 # Website testing
 if scan == "test":
-    '''
-    # Old single-website testing
-    code = input("Please input the status code that you would like to test! (e.g. 200) ")
-    TestSocket = "https://httpstat.us/" + "{}".format(code)
-    print("Testing code {}".format(code) + " at website: " + TestSocket)
-    response = requests.get(TestSocket, timeout=5)
-    # print(response)
-    print("This is the response: ", response, "\nSuccess!!")
-    sys.exit()
-    '''
-
     # Multi-website and single directory testing
     website = input("Please input the website that you would like to scan! (e.g. google.com) ")
     website = "depaul.edu"
@@ -179,9 +137,6 @@ elif scan == 'ip':
     # ipinput = 'text'
     if ipinput == 'terminal':
         ip = input("Please input the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
-        # ip = '140.192.40.120/32'
-        # ip = ip.split()
-        # print(ip)
         # FOR TESTING
         # ip = '10.11.2.110'
         # ip = '127.0.0.1/32'
@@ -223,8 +178,6 @@ if ans1 == 'single':
     # ports = ['80', '443', '8001', '8080', '9000']
 
     f = 's'
-    # print(f)
-    # print("SinglePorts:{}".format(type(ports)))
     print("SinglePorts: {}\n".format(ports))
 
 elif ans1 == 'range':
@@ -294,18 +247,6 @@ for j in ipaddress.ip_network(ip):
                 # FOR TESTING
                 # print("SingleTest 1")
 
-                '''
-                # THIS WORKS
-                # FOR TESTING
-                # j = "140.192.40.120"
-                # i = "443"
-
-                WebSocket = "http://{}:{}".format(str(j),str(i))
-                print(WebSocket)
-                response = requests.get(WebSocket, timeout=5)
-                print(response.content)
-                print("SingleTest 2")
-                '''
                 print("Test 4")
                 WebServer(j,i)
 
@@ -315,13 +256,6 @@ for j in ipaddress.ip_network(ip):
 
     # TCP SCAN - Range Ports/File Ports
     elif f == 'r':
-        '''
-        timeout_ports = input("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
-        if timeout_ports == '':
-            timeout_ports = '5'
-        else:
-            timeout_ports = timeout_ports
-        '''
         for i in range(int(ports[0]),int(ports[1])):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(float(timeout_ports))
@@ -360,13 +294,3 @@ for j in ipaddress.ip_network(ip):
         for i in open_ports:
             print(i)
             # print("\n")
-
-
-'''
-# THIS WORKS
-ip = "127.0.0.1"
-ports = "8000"
-h = httplib2.Http()
-resp, content = h.request('http://{}:{}'.format(str(ip),str(ports)),"GET")
-print(resp.status)
-'''
