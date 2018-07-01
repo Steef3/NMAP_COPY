@@ -2,6 +2,8 @@
 
 '''
 #TO DO
+Add function to the end of every task to ask, whether the user wants to do anything else
+Make directory responses show up cleaner in the terminal/independent of how long the directory name is
 Input via text file/list of IPs.
 Input cleaning for website entries (DNS), e.g. google.co is not possible
 Test mode for any website and directory
@@ -131,15 +133,28 @@ if scan == "test":
     print(directories)
     directories = directories.split(",")
     print(directories)
-    # directories_2 = input("Please input the directories for the second level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
-    # print(directories_2)
-    # directories = directories_2.split(",")
-    # print(directories_2)
+    level_2 = input("Would you like to scan a second layer of directories? (yes/no) ")
+    # level_2 = 'YeS'
+    level_2 = 'nO'
+    level_2 = level_2.lower()
+    print(level_2)
+    if level_2 == 'yes':
+        directories2 = input("Please input the directories for the second level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
+        directories2 = 'about,/,support,test'
+        print(directories2)
+        directories2 = directories2.split(",")
+        print(directories2)
+
+    else:
+        directories2 = ''
+        print("No second-level directories specified.")
+
     for directory in directories:
-        TestSocket = "https://" + website + "/" + directory
-        print("Testing {}/{}!".format(website,directory))
-        response = requests.get(TestSocket, timeout=5)
-        print("This is the response: ", response, ".")
+        for directory2 in directories2:
+            TestSocket = "https://" + website + "/" + directory + "/" + directory2
+            response = requests.get(TestSocket, timeout=5)
+            print("Testing {}/{}/{}!\t".format(website,directory,directory2),response)
+
     print("Testing complete. Exiting.")
     sys.exit()
 
