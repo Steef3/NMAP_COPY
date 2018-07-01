@@ -2,6 +2,7 @@
 
 '''
 #TO DO
+Better commenting needed throughout the code
 Make code super-clean (haha)
 FIXED: Initial cleanup for code
 Add a default for every input that is asked from the user
@@ -11,7 +12,7 @@ Input via text file/list of IPs.
 Input cleaning for website entries (DNS), e.g. google.co is not possible
 Test mode for any website and directory
 RangePorts not working, when inputting 443-443, for example.
-RangePorts not working and taking forever in any case.
+Fixed: RangePorts not working and taking forever in any case.
 s.connect not working, if put into a function.
 Control+C not immediately exiting.
 Web requests will be sent to every port. Needs to be fixed.
@@ -76,9 +77,9 @@ def WebServer(ip,ports):
 
 scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
 # FOR TESTING
-# scan = 'ip'
+scan = 'ip'
 # scan = 'name'
-scan = 'directory'
+# scan = 'directory'
 print(scan)
 
 # Website testing
@@ -137,7 +138,7 @@ elif scan == 'ip':
         # FOR TESTING
         # ip = '10.11.2.110'
         # ip = '127.0.0.1/32'
-        # ip = '140.192.40.120/32'
+        ip = '140.192.40.120/32' # secdaemons.org
         # ip = '140.192.40.120/30'
         # ip = '146.55.65.186/32' # DePaul iD Lab
         # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found"
@@ -178,8 +179,11 @@ if ans1 == 'single':
 elif ans1 == 'range':
     ports_range = input("Please enter a range of ports (e.g. 100-500) ")
     # FOR TESTING
+    ports_range = '443-443'
     # ports_range = '442-444'
-    ports_range = '0-65536'
+    # ports_range = '0-65536'
+    # ports_range = '0-100'
+    # ports_range = '79-81'
     ports = ports_range.split('-')
 
     f = 'r'
@@ -206,13 +210,15 @@ else:
     timeout_ports = timeout_ports
 
 print(ip)
-ip = '10.11.2.110'
+# ip = '10.11.2.110'
 # ip = '127.0.0.1'
 for j in ipaddress.ip_network(ip):
     j = str(j)
     # print(j)
     print("\nScanning IP: {}\n".format(j))
     open_ports = []
+
+    print(f)
 
     # TCP SCAN - Single Ports
     if f == 's':
