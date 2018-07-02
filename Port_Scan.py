@@ -4,19 +4,15 @@
 #TO DO
 Better commenting needed throughout the code
 Make code super-clean (haha)
-FIXED: Initial cleanup for code
 Add a default for every input that is asked from the user
 Add function to the end of every task to ask, whether the user wants to do anything else
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
 Input via text file/list of IPs.
 Input cleaning for website entries (DNS), e.g. google.co is not possible
-Test mode for any website and directory
 Bypassed: RangePorts not working, when inputting 443-443, for example.
-Fixed: RangePorts not working and taking forever in any case.
 s.connect not working, if put into a function.
 Control+C not immediately exiting.
-Web requests will be sent to every port. Needs to be fixed.
-FIXED: Fix timeout default for webrequests.
+Web requests will be sent to every port. Needs to be fixed. Problem: trying for banner times out, higher timeout (100) leads to b'' (without try statement)
 Program closes out, if no valid response from a web request.
 Open port but NO web server leads to exception of web server AND ports... (should only be for web)
 Fix global ip in scan = 'name' if-statement
@@ -158,8 +154,8 @@ NOTE: Needs to be fixed
 ans1 = input("Would you like to scan single ports (single) or a range of ports (range)? ")
 # FOR TESTING
 # ans1 = 'single'
-ans1 = 'range'
-# ans1 = 'file'
+# ans1 = 'range'
+ans1 = 'file'
 
 ans1 = ans1.lower()
 
@@ -170,7 +166,7 @@ if ans1 == 'single':
     # ports = ['80']
     # ports = ['890']
     # ports = ['443']
-    # ports = ['80', '443', '8000']
+    ports = ['80', '443', '8000']
     # ports = ['80', '443', '8001', '8080', '9000']
 
     f = 's'
@@ -190,22 +186,21 @@ elif ans1 == 'range':
     # print(type(ports[0]))
     print("RangePorts: {}\n".format(ports))
 
-'''
-# MAYBE: Port list from a file
 elif ans1 == 'file':
-    ports_file = open('portlist.txt', 'r')
-    print(ports_file)
-    ports = ports_file.split('\n')
-    f = 'f'
+    portsfile = open('ports.txt', 'r')
+    ports = portsfile.read()
+    portsfile.close()
+    ports = ports.split('\n')
+    f = 's'
     # print("FilePorts:{}".format(type(ports)))
     print("FilePorts: {}\n".format(ports))
-'''
+
 
 timeout_ports = input("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
 if timeout_ports == '':
     # timeout_ports = '5'
     # FOR TESTING
-    timeout_ports = '1'
+    timeout_ports = '5'
 else:
     timeout_ports = timeout_ports
 
@@ -264,6 +259,7 @@ for j in ipaddress.ip_network(ip):
             print("Trying port number",i,".")
             # WORKS UP UNTIL HERE
             # print(s)
+
             try:
                 s.connect((j,int(i)))
                 print("Port Connection Test Range successful.")
@@ -271,6 +267,7 @@ for j in ipaddress.ip_network(ip):
                 # print("Open_Ports Appending Test Range.")
 
                 print("Test 2")
+
 
                 try:
                     banner = s.recv(1024)
