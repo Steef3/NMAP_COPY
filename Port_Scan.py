@@ -73,8 +73,8 @@ def WebServer(ip,ports):
 
 scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
 # FOR TESTING
-scan = 'ip'
-# scan = 'name'
+# scan = 'ip'
+scan = 'name'
 # scan = 'directory'
 print(scan)
 
@@ -120,11 +120,10 @@ elif scan == 'name':
     # This is dangerous...
     global ip
     ip = socket.gethostbyname(name)
-    ip = ip.split()
+    ip = ip + '/32'
     print(ip)
 
 elif scan == 'ip':
-    # ip = input("Input IP: ")
     ipinput = input("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ")
     # FOR TESTING
     ipinput = 'terminal'
