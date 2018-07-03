@@ -2,6 +2,8 @@
 
 '''
 #TO DO
+Make code more modular
+Directory scan second level answer "no" not scanning anything and "yes" breaks the program...
 Better commenting needed throughout the code
 Make code super-clean (haha)
 Add a default for every input that is asked from the user
@@ -70,16 +72,7 @@ def WebServer(ip,ports):
         pass
     # For more info on status codes, please see http://www.restapitutorial.com/httpstatuscodes.html.
 
-
-scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
-# FOR TESTING
-# scan = 'ip'
-scan = 'name'
-# scan = 'directory'
-print(scan)
-
-# Website testing
-if scan == "directory":
+def directory_scan():
     # Multi-website and 2-level directory testing
     website = input("Please input the website that you would like to scan! (e.g. google.com) ")
     website = "secdaemons.org"
@@ -89,8 +82,8 @@ if scan == "directory":
     directories = directories.split(",")
     print(directories)
     level_2 = input("Would you like to scan a second layer of directories? (yes/no) ")
-    # level_2 = 'YeS'
-    level_2 = 'nO'
+    level_2 = 'YeS'
+    # level_2 = 'nO'
     level_2 = level_2.lower()
     print(level_2)
     if level_2 == 'yes':
@@ -113,7 +106,7 @@ if scan == "directory":
     print("Testing complete. Exiting.")
     sys.exit()
 
-elif scan == 'name':
+def name_scan():
     name = input("What is the name of the website that you would like to scan? (e.g. google.com) ")
     # name = 'brackets.io'
     name = 'secdaemons.org'
@@ -123,7 +116,7 @@ elif scan == 'name':
     ip = ip + '/32'
     print(ip)
 
-elif scan == 'ip':
+def ip_scan():
     ipinput = input("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ")
     # FOR TESTING
     ipinput = 'terminal'
@@ -149,6 +142,26 @@ NOTE: Needs to be fixed
         # ip = '140.192.40.120/32'
         # print("File Test")
 '''
+
+
+scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
+# FOR TESTING
+# scan = 'ip'
+# scan = 'name'
+scan = 'directory'
+print(scan)
+
+# Website directory testing
+if scan == "directory":
+    directory_scan()
+
+# Domain name port testing
+elif scan == 'name':
+    name_scan()
+
+# IP address port testing
+elif scan == 'ip':
+    ip_scan()
 
 ans1 = input("Would you like to scan single ports (single) or a range of ports (range)? ")
 # FOR TESTING
