@@ -2,6 +2,7 @@
 
 '''
 #TO DO
+Support for multiple IP addresses needed
 Make code more modular
 Directory scan second level answer "no" not scanning anything and "yes" breaks the program...
 Better commenting needed throughout the code
@@ -119,10 +120,11 @@ def name_scan():
 def ip_scan():
     ipinput = input("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ")
     # FOR TESTING
-    ipinput = 'terminal'
-    # ipinput = 'text'
+    # ipinput = 'terminal'
+    ipinput = 'text'
+    # Dangerous dangerous dangerous..... FIX NEEDED
+    global ip
     if ipinput == 'terminal':
-        global ip
         ip = input("Please input the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
         # FOR TESTING
         # ip = '10.11.2.110'
@@ -131,18 +133,16 @@ def ip_scan():
         # ip = '140.192.40.120/30'
         # ip = '146.55.65.186/32' # DePaul iD Lab
         # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found
-'''
+
     elif ipinput == 'text':
-        global ip
         ipfile = input('Please input the name of the list that you would like to submit (e.g. "iplist.txt"): ')
-        ipfile = open('ips.txt', 'r')
-        ip = list.readline()
+        ipfile = 'ips.txt'
+        ipfile = open(ipfile, 'r')
+        ip = ipfile.readline()
         ipfile.close()
         print(ip)
         # ip = '140.192.40.120/32'
         # print("File Test")
-'''
-
 
 scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
 # FOR TESTING
@@ -200,6 +200,9 @@ elif ans1 == 'range':
 
 elif ans1 == 'file':
     portsfile = input("What file would you like to use? (e.g. ports.txt) ")
+    # FOR TESTING
+    portsfile = 'ports.txt'
+
     portsfile = open(portsfile, 'r')
     ports = portsfile.read()
     portsfile.close()
@@ -211,8 +214,6 @@ elif ans1 == 'file':
 
 timeout_ports = input("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
 if timeout_ports == '':
-    # timeout_ports = '5'
-    # FOR TESTING
     timeout_ports = '5'
 else:
     timeout_ports = timeout_ports
@@ -220,6 +221,7 @@ else:
 # print(ip)
 # ip = '10.11.2.110'
 # ip = '127.0.0.1'
+# ip = '140.192.40.120/32'
 for j in ipaddress.ip_network(ip):
     j = str(j)
     # print(j)
