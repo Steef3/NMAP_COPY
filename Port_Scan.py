@@ -122,6 +122,7 @@ def ip_scan():
     ipinput = 'terminal'
     # ipinput = 'text'
     if ipinput == 'terminal':
+        global ip
         ip = input("Please input the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
         # FOR TESTING
         # ip = '10.11.2.110'
@@ -129,15 +130,14 @@ def ip_scan():
         ip = '140.192.40.120/32' # secdaemons.org
         # ip = '140.192.40.120/30'
         # ip = '146.55.65.186/32' # DePaul iD Lab
-        # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found"
-    else:
-        pass
+        # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found
 '''
-NOTE: Needs to be fixed
     elif ipinput == 'text':
-        list = input('Please input the name of the list that you would like to submit (e.g. "iplist.txt"): ')
-        list = open('iplist.txt', 'r')
-        ip = list.read().split("\n")
+        global ip
+        ipfile = input('Please input the name of the list that you would like to submit (e.g. "iplist.txt"): ')
+        ipfile = open('ips.txt', 'r')
+        ip = list.readline()
+        ipfile.close()
         print(ip)
         # ip = '140.192.40.120/32'
         # print("File Test")
@@ -146,9 +146,9 @@ NOTE: Needs to be fixed
 
 scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
 # FOR TESTING
-# scan = 'ip'
+scan = 'ip'
 # scan = 'name'
-scan = 'directory'
+# scan = 'directory'
 print(scan)
 
 # Website directory testing
@@ -199,7 +199,8 @@ elif ans1 == 'range':
     print("RangePorts: {}\n".format(ports))
 
 elif ans1 == 'file':
-    portsfile = open('ports.txt', 'r')
+    portsfile = input("What file would you like to use? (e.g. ports.txt) ")
+    portsfile = open(portsfile, 'r')
     ports = portsfile.read()
     portsfile.close()
     ports = ports.split('\n')
@@ -216,7 +217,7 @@ if timeout_ports == '':
 else:
     timeout_ports = timeout_ports
 
-print(ip)
+# print(ip)
 # ip = '10.11.2.110'
 # ip = '127.0.0.1'
 for j in ipaddress.ip_network(ip):
