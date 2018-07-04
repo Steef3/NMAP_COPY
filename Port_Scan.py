@@ -2,7 +2,7 @@
 
 '''
 #TO DO
-Support for multiple IP addresses needed
+Exchange all rudimentary tests to actual feedback to the user
 Make code more modular
 Directory scan second level answer "no" not scanning anything and "yes" breaks the program...
 Better commenting needed throughout the code
@@ -129,6 +129,7 @@ def ip_scan():
         # FOR TESTING
         # ip = '10.11.2.110'
         # ip = '127.0.0.1/32'
+        # print("Terminal test.")
         ip = '140.192.40.120/32' # secdaemons.org
         # ip = '140.192.40.120/30'
         # ip = '146.55.65.186/32' # DePaul iD Lab
@@ -138,8 +139,9 @@ def ip_scan():
         ipfile = input('Please input the name of the list that you would like to submit (e.g. "iplist.txt"): ')
         ipfile = 'ips.txt'
         ipfile = open(ipfile, 'r')
-        ip = ipfile.readline()
+        ip = ipfile.read()
         ipfile.close()
+        ip = ip.split('\n')
         print(ip)
         # ip = '140.192.40.120/32'
         # print("File Test")
@@ -221,89 +223,91 @@ else:
 # print(ip)
 # ip = '10.11.2.110'
 # ip = '127.0.0.1'
-# ip = '140.192.40.120/32'
-for j in ipaddress.ip_network(ip):
-    j = str(j)
-    # print(j)
-    print("\nScanning IP: {}\n".format(j))
-    open_ports = []
+# ip = '140.192.40.120/30' # will scan 120,121,122,123
+for k in ip:
+    ip = k
+    for j in ipaddress.ip_network(ip):
+        j = str(j)
+        # print(j)
+        print("\nScanning IP: {}\n".format(j))
+        open_ports = []
 
-    print(f)
+        print(f)
 
-    # TCP SCAN - Single Ports
-    if f == 's':
+        # TCP SCAN - Single Ports
+        if f == 's':
 
-        for i in ports:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(float(timeout_ports))
-            # print(s)
-            print("Trying port number",i,".")
-            try:
-                s.connect((j,int(i)))
-                print("Port Connection Test Single successful.")
-                open_ports.append(i)
-                # print("Open_Ports Appending Test Single successful.")
-
-                print("Test 2")
-
+            for i in ports:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(float(timeout_ports))
+                # print(s)
+                print("Trying port number",i,".")
                 try:
-                    banner = s.recv(1024)
-                    print(banner)
-                    print("Test 3a")
+                    s.connect((j,int(i)))
+                    print("Port Connection Test Single successful.")
+                    open_ports.append(i)
+                    # print("Open_Ports Appending Test Single successful.")
+
+                    print("Test 2")
+
+                    try:
+                        banner = s.recv(1024)
+                        print(banner)
+                        print("Test 3a")
+                    except:
+                        print("Test 3b")
+                        pass
+
+
+                    # FOR TESTING
+                    # print("SingleTest 1")
+
+                    print("Test 4")
+                    WebServer(j,i)
+
                 except:
-                    print("Test 3b")
+                    print("This port is closed.\n")
                     pass
 
-
-                # FOR TESTING
-                # print("SingleTest 1")
-
-                print("Test 4")
-                WebServer(j,i)
-
-            except:
-                print("This port is closed.\n")
-                pass
-
-    # TCP SCAN - Range Ports/File Ports
-    elif f == 'r':
-        for i in range(int(ports[0]),int(ports[1])):
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(float(timeout_ports))
-            # print(s)
-            print("Trying port number",i,".")
-            # WORKS UP UNTIL HERE
-            # print(s)
-
-            try:
-                s.connect((j,int(i)))
-                print("Port Connection Test Range successful.")
-                open_ports.append(i)
-                # print("Open_Ports Appending Test Range.")
-
-                print("Test 2")
-
+        # TCP SCAN - Range Ports/File Ports
+        elif f == 'r':
+            for i in range(int(ports[0]),int(ports[1])):
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(float(timeout_ports))
+                # print(s)
+                print("Trying port number",i,".")
+                # WORKS UP UNTIL HERE
+                # print(s)
 
                 try:
-                    banner = s.recv(1024)
-                    print(banner)
-                    print("Test 3a")
+                    s.connect((j,int(i)))
+                    print("Port Connection Test Range successful.")
+                    open_ports.append(i)
+                    # print("Open_Ports Appending Test Range.")
+
+                    print("Test 2")
+
+
+                    try:
+                        banner = s.recv(1024)
+                        print(banner)
+                        print("Test 3a")
+                    except:
+                        print("Test 3b")
+                        pass
+
+                    # FOR TESTING
+                    # print("RangeTest 1")
+                    WebServer(j,i)
+
                 except:
-                    print("Test 3b")
+                    print("This port is closed.\n")
                     pass
 
-                # FOR TESTING
-                # print("RangeTest 1")
-                WebServer(j,i)
-
-            except:
-                print("This port is closed.\n")
-                pass
-
-    print("Summary/These ports are all open:")
-    if len(open_ports) == 0:
-        print("NONE.\n")
-    else:
-        for i in open_ports:
-            print(i)
-            # print("\n")
+        print("Summary/These ports are all open for {}:".format(j))
+        if len(open_ports) == 0:
+            print("NONE.\n")
+        else:
+            for i in open_ports:
+                print(i)
+                # print("\n")
