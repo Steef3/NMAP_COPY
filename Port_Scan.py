@@ -2,19 +2,19 @@
 
 '''
 #TO DO
+Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
 Exchange all rudimentary tests to actual feedback to the user
 Make code more modular (for a reason... Also, find that reason)
 Directory scan second level answer "no" not scanning anything and "yes" breaks the program...
 Better commenting needed throughout the code
 Make code super-clean (haha)
 Add a default for every input that is asked from the user
-Add a way to have the default be triggered after 10 (or so) seconds to automatically kick in, if no input is given
 Show default pathway at some point (e.g. ip -> single -> text and so on)
 Add function to the end of every task to ask, whether the user wants to do anything else
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
-Input via text file/list of IPs.
-Input cleaning for website entries (DNS), e.g. google.co is not possible
-Bypassed: RangePorts not working, when inputting 443-443, for example.
+auto_continue via text file/list of IPs.
+auto_continue cleaning for website entries (DNS), e.g. google.co is not possible
+Bypassed: RangePorts not working, when auto_continueting 443-443, for example.
 s.connect not working, if put into a function.
 Control+C not immediately exiting.
 Web requests will be sent to every port. Needs to be fixed. Problem: trying for banner times out, higher timeout (100) leads to b'' (without try statement)
@@ -23,22 +23,87 @@ Open port but NO web server leads to exception of web server AND ports... (shoul
 Fix global ip in if-statement
 '''
 
-import socket, ipaddress, requests, sys, bs4
+'''
+# Fun websites to test
+http://httpbin.org/status/418
+http://httpstat.us/418?sleep=5
+'''
+
+import socket, ipaddress, requests, sys, bs4, time, _thread, threading
 
 if __name__ == "__main__":
-    def WebServer(ip,ports):
-        WebSocket = "http://{}:{}".format(str(j),str(i))
-        timeout_web = input("What would you like the timeout to be for this web request in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
+    info = 'At the current state of the program, you need to press Ctrl + C to auto_continue stuff.'
+    print(info)
+    def auto_continue(prompt):
+        print(prompt)
+        try:
+            for i in range(0, 1):
+                time_to_wait = 5
+                time.sleep(time_to_wait)
+                # FOR TESTING
+                # print(i)
+                if i == 1:
+                    print("Using default values...")
+                    # FOR TESTING
+                    # prompt = 'The time has outed.'
+                else:
+                    pass
+        except KeyboardInterrupt:
+            prompt = input("___auto_continue: ")
+
+        '''
+        # Option 2
+        t = Timer(timeout, print, ["Continuing with default values..."])
+        t.start()
+        prompt = "You have {} seconds to choose the correct answer...\n".format(timeout)
+        answer = input(prompt)
+        t.cancel()
+        '''
+        '''
+        # Option 3
+        print("Testing {}.".format(prompt))
+        timer = threading.Timer(timeout, _thread.interrupt_main)
+        astring = None
+        try:
+            timer.start()
+            astring = auto_continue(prompt)
+        except KeyboardInterrupt:
+            pass
+        timer.cancel()
+        return astring
+        '''
+        '''
+        # Option 4
+        start = time.time()
+        user_input = input(">")
+        now = time.time()
+        if now - start <= 5:
+            print(now - start)
+        else:
+            print("More than 2 seconds")
+            print(now - start)
+        '''
+    '''
+    # FOR TESTING
+    # auto_continue test
+    innnput = auto_continue("Testing:")
+    print(innnput)
+    print("Auto_continue test complete. Moving on...")
+    '''
+
+    def web_server(ip,ports):
+        web_socket = "http://{}:{}".format(str(j),str(i))
+        timeout_web = auto_continue("What would you like the timeout to be for this web request in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
         if timeout_web == '':
             timeout_web = '5'
         else:
             timeout_web = timeout_web
 
-        print("Sending WebRequest to " + WebSocket + " with a timeout of {}.".format(timeout_web))
+        print("Sending WebRequest to " + web_socket + " with a timeout of {}.".format(timeout_web))
 
         try:
-            response = requests.get(WebSocket,timeout=int(timeout_web))
-            print("There is a WebServer at {} on port {}.".format(str(ip),str(ports)))
+            response = requests.get(web_socket,timeout=int(timeout_web))
+            print("There is a web_server at {} on port {}.".format(str(ip),str(ports)))
             headers = response.headers
             print("This is a(n) {}".format(headers['Server']),"server.")
 
@@ -70,29 +135,29 @@ if __name__ == "__main__":
             print("\n")
 
         except:
-            print("There is probably no WebServer running here or it only accepts http requests with SSL/TLS.")
+            print("There is probably no web_server running here or it only accepts http requests with SSL/TLS.")
             print("\n")
             # This would run the exception of the port scan "Port is closed".
-            # raise Exception ("There probably is no WebServer running here.")
+            # raise Exception ("There probably is no web_server running here.")
             pass
         # For more info on status codes, please see http://www.restapitutorial.com/httpstatuscodes.html.
 
     def directory_scan():
         # Multi-website and 2-level directory testing
-        website = input("Please input the website that you would like to scan! (e.g. google.com) ")
+        website = auto_continue("Please auto_continue the website that you would like to scan! (e.g. google.com) ")
         website = "secdaemons.org"
-        directories = input("Please input the directories for the first level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
+        directories = auto_continue("Please auto_continue the directories for the first level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
         directories = "about,/,support,test,dokuwiki"
         print(directories)
         directories = directories.split(",")
         print(directories)
-        level_2 = input("Would you like to scan a second layer of directories? (yes/no) ")
+        level_2 = auto_continue("Would you like to scan a second layer of directories? (yes/no) ")
         level_2 = 'YeS'
         # level_2 = 'nO'
         level_2 = level_2.lower()
         print(level_2)
         if level_2 == 'yes':
-            directories2 = input("Please input the directories for the second level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
+            directories2 = auto_continue("Please auto_continue the directories for the second level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
             directories2 = 'about,/,support,test,dokuwiki'
             print(directories2)
             directories2 = directories2.split(",")
@@ -112,7 +177,7 @@ if __name__ == "__main__":
         sys.exit()
 
     def name_scan():
-        name = input("What is the name of the website that you would like to scan? (e.g. google.com) ")
+        name = auto_continue("What is the name of the website that you would like to scan? (e.g. google.com) ")
         # name = 'brackets.io'
         name = 'secdaemons.org'
         # This is dangerous...
@@ -122,14 +187,14 @@ if __name__ == "__main__":
         print(ip)
 
     def ip_scan():
-        ipinput = input("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ")
+        ip_in = auto_continue("Would you like to auto_continue an ip/network to scan via auto_continueting into the terminal (terminal) or via a list in a text file (text)? ")
         # FOR TESTING
-        # ipinput = 'terminal'
-        ipinput = 'text'
+        # ipauto_continue = 'terminal'
+        ip_in = 'text'
         # Dangerous dangerous dangerous..... FIX NEEDED
         global ip
-        if ipinput == 'terminal':
-            ip = input("Please input the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
+        if ip_in == 'terminal':
+            ip = auto_continue("Please auto_continue the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
             # FOR TESTING
             # ip = '10.11.2.110'
             # ip = '127.0.0.1/32'
@@ -139,8 +204,8 @@ if __name__ == "__main__":
             # ip = '146.55.65.186/32' # DePaul iD Lab
             # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found
 
-        elif ipinput == 'text':
-            ipfile = input('Please input the name of the list that you would like to submit (e.g. "iplist.txt"): ')
+        elif ip_in == 'text':
+            ipfile = auto_continue('Please auto_continue the name of the list that you would like to submit (e.g. "iplist.txt"): ')
             ipfile = 'ips.txt'
             ipfile = open(ipfile, 'r')
             ip = ipfile.read()
@@ -150,7 +215,7 @@ if __name__ == "__main__":
             # ip = '140.192.40.120/32'
             # print("File Test")
 
-    scan = input("Would you like scan via inputting an IP (ip), via inputting a website name (name) or would you like to test a website for directories (directory)? ")
+    scan = auto_continue("Would you like scan via auto_continueting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ")
     # FOR TESTING
     scan = 'ip'
     # scan = 'name'
@@ -169,7 +234,7 @@ if __name__ == "__main__":
     elif scan == 'ip':
         ip_scan()
 
-    ans1 = input("Would you like to scan single ports (single) or a range of ports (range)? ")
+    ans1 = auto_continue("Would you like to scan single ports (single) or a range of ports (range)? ")
     # FOR TESTING
     # ans1 = 'single'
     # ans1 = 'range'
@@ -178,7 +243,7 @@ if __name__ == "__main__":
     ans1 = ans1.lower()
 
     if ans1 == 'single':
-        ports_single = input("Please enter single ports separated by a comma (e.g. 80,443,3389) ")
+        ports_single = auto_continue("Please enter single ports separated by a comma (e.g. 80,443,3389) ")
         ports = ports_single.split(',')
         # FOR TESTING
         # ports = ['80']
@@ -191,7 +256,7 @@ if __name__ == "__main__":
         print("SinglePorts: {}\n".format(ports))
 
     elif ans1 == 'range':
-        ports_range = input("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please input like 443-444 to scan 443. ")
+        ports_range = auto_continue("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please auto_continue like 443-444 to scan 443. ")
         # FOR TESTING
         ports_range = '443-444'
         # ports_range = '442-444'
@@ -205,7 +270,7 @@ if __name__ == "__main__":
         print("RangePorts: {}\n".format(ports))
 
     elif ans1 == 'file':
-        portsfile = input("What file would you like to use? (e.g. ports.txt) ")
+        portsfile = auto_continue("What file would you like to use? (e.g. ports.txt) ")
         # FOR TESTING
         portsfile = 'ports.txt'
 
@@ -218,12 +283,13 @@ if __name__ == "__main__":
         print("FilePorts: {}\n".format(ports))
 
 
-    timeout_ports = input("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
-    if timeout_ports == '':
+    timeout_ports = auto_continue("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
+    if timeout_ports == None:
         timeout_ports = '5'
     else:
         timeout_ports = timeout_ports
 
+    print(timeout_ports)
     # print(ip)
     # ip = '10.11.2.110'
     # ip = '127.0.0.1'
@@ -267,7 +333,7 @@ if __name__ == "__main__":
                         # print("SingleTest 1")
 
                         print("Test 4")
-                        WebServer(j,i)
+                        web_server(j,i)
 
                     except:
                         print("This port is closed.\n")
@@ -302,7 +368,7 @@ if __name__ == "__main__":
 
                         # FOR TESTING
                         # print("RangeTest 1")
-                        WebServer(j,i)
+                        web_server(j,i)
 
                     except:
                         print("This port is closed.\n")
