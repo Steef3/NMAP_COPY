@@ -34,6 +34,7 @@ import socket, ipaddress, requests, sys, bs4, time, _thread, threading
 if __name__ == "__main__":
     info = 'At the current state of the program, you need to press Ctrl + C to auto_continue stuff.'
     print(info)
+
     def auto_continue(prompt):
         print(prompt)
         try:
@@ -50,6 +51,14 @@ if __name__ == "__main__":
                     pass
         except KeyboardInterrupt:
             prompt = input("___auto_continue: ")
+
+    def default(default_name, default_value):
+        if default_name == None:
+            default_name = default_value
+            return(default_name)
+        else:
+            default_name = default_name
+            return(defaul_name)
 
         '''
         # Option 2
@@ -94,10 +103,7 @@ if __name__ == "__main__":
     def web_server(ip,ports):
         web_socket = "http://{}:{}".format(str(j),str(i))
         timeout_web = auto_continue("What would you like the timeout to be for this web request in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
-        if timeout_web == '':
-            timeout_web = '5'
-        else:
-            timeout_web = timeout_web
+        timeout_web = default(timeout_web, '5')
 
         print("Sending WebRequest to " + web_socket + " with a timeout of {}.".format(timeout_web))
 
@@ -144,7 +150,7 @@ if __name__ == "__main__":
 
     def directory_scan():
         # Multi-website and 2-level directory testing
-        website = auto_continue("Please auto_continue the website that you would like to scan! (e.g. google.com) ")
+        website = auto_continue("Please input the website that you would like to scan! (e.g. google.com) ")
         website = "secdaemons.org"
         directories = auto_continue("Please auto_continue the directories for the first level that you would like to scan divided by commas! (.e.g about,/,support,test) ")
         directories = "about,/,support,test,dokuwiki"
@@ -187,14 +193,13 @@ if __name__ == "__main__":
         print(ip)
 
     def ip_scan():
-        ip_in = auto_continue("Would you like to auto_continue an ip/network to scan via auto_continueting into the terminal (terminal) or via a list in a text file (text)? ")
-        # FOR TESTING
-        # ipauto_continue = 'terminal'
-        ip_in = 'text'
+        ip_in = auto_continue("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ")
+        ip_in = default(ip_in, 'text')
+        print(ip_in)
         # Dangerous dangerous dangerous..... FIX NEEDED
         global ip
         if ip_in == 'terminal':
-            ip = auto_continue("Please auto_continue the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
+            ip = auto_continue("Please input the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ")
             # FOR TESTING
             # ip = '10.11.2.110'
             # ip = '127.0.0.1/32'
@@ -205,7 +210,7 @@ if __name__ == "__main__":
             # NOT WORKING: ip = '62.116.130.8' # theuselessweb.com 80, "Sorry, no host found
 
         elif ip_in == 'text':
-            ipfile = auto_continue('Please auto_continue the name of the list that you would like to submit (e.g. "iplist.txt"): ')
+            ipfile = auto_continue('Please input the name of the list that you would like to submit (e.g. "iplist.txt"): ')
             ipfile = 'ips.txt'
             ipfile = open(ipfile, 'r')
             ip = ipfile.read()
@@ -215,11 +220,8 @@ if __name__ == "__main__":
             # ip = '140.192.40.120/32'
             # print("File Test")
 
-    scan = auto_continue("Would you like scan via auto_continueting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ")
-    # FOR TESTING
-    scan = 'ip'
-    # scan = 'name'
-    # scan = 'directory'
+    scan = auto_continue("Would you like scan via inputting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ")
+    scan = default(scan, 'ip')
     print(scan)
 
     # Website directory testing
@@ -234,13 +236,10 @@ if __name__ == "__main__":
     elif scan == 'ip':
         ip_scan()
 
-    ans1 = auto_continue("Would you like to scan single ports (single) or a range of ports (range)? ")
-    # FOR TESTING
-    # ans1 = 'single'
-    # ans1 = 'range'
-    ans1 = 'file'
-
+    ans1 = auto_continue("Would you like to input single ports (single) or a range of ports (range) or single ports via a file (file)? ")
+    ans1 = default(ans1, 'file')
     ans1 = ans1.lower()
+    print(ans1)
 
     if ans1 == 'single':
         ports_single = auto_continue("Please enter single ports separated by a comma (e.g. 80,443,3389) ")
@@ -282,14 +281,11 @@ if __name__ == "__main__":
         # print("FilePorts:{}".format(type(ports)))
         print("FilePorts: {}\n".format(ports))
 
-
     timeout_ports = auto_continue("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ")
-    if timeout_ports == None:
-        timeout_ports = '5'
-    else:
-        timeout_ports = timeout_ports
+    timeout_ports = default(timeout_ports, '5')
 
     print(timeout_ports)
+
     # print(ip)
     # ip = '10.11.2.110'
     # ip = '127.0.0.1'
@@ -298,7 +294,6 @@ if __name__ == "__main__":
         ip = k
         for j in ipaddress.ip_network(ip):
             j = str(j)
-            # print(j)
             print("\nScanning IP: {}\n".format(j))
             open_ports = []
 
@@ -310,29 +305,18 @@ if __name__ == "__main__":
                 for i in ports:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.settimeout(float(timeout_ports))
-                    # print(s)
                     print("Trying port number{}.".format(i))
                     try:
                         s.connect((j,int(i)))
                         print("Port Connection Test Single successful.")
                         open_ports.append(i)
-                        # print("Open_Ports Appending Test Single successful.")
-
-                        print("Test 2")
 
                         try:
                             banner = s.recv(1024)
                             print(banner)
-                            print("Test 3a")
                         except:
-                            print("Test 3b")
                             pass
 
-
-                        # FOR TESTING
-                        # print("SingleTest 1")
-
-                        print("Test 4")
                         web_server(j,i)
 
                     except:
@@ -344,19 +328,12 @@ if __name__ == "__main__":
                 for i in range(int(ports[0]),int(ports[1])):
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.settimeout(float(timeout_ports))
-                    # print(s)
                     print("Trying port number",i,".")
-                    # WORKS UP UNTIL HERE
-                    # print(s)
 
                     try:
                         s.connect((j,int(i)))
                         print("Port Connection Test Range successful.")
                         open_ports.append(i)
-                        # print("Open_Ports Appending Test Range.")
-
-                        print("Test 2")
-
 
                         try:
                             banner = s.recv(1024)
@@ -366,8 +343,6 @@ if __name__ == "__main__":
                             print("Test 3b")
                             pass
 
-                        # FOR TESTING
-                        # print("RangeTest 1")
                         web_server(j,i)
 
                     except:
@@ -380,4 +355,3 @@ if __name__ == "__main__":
             else:
                 for i in open_ports:
                     print(i)
-                    # print("\n")
