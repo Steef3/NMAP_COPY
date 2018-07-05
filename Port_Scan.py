@@ -50,7 +50,9 @@ if __name__ == "__main__":
                 else:
                     pass
         except KeyboardInterrupt:
-            prompt = input("___auto_continue: ")
+            prompt = input("\nInput: ")
+            print("You input:{}.".format(prompt))
+            return(prompt)
 
     def default(default_name, default_value):
         if default_name == None:
@@ -58,7 +60,7 @@ if __name__ == "__main__":
             return(default_name)
         else:
             default_name = default_name
-            return(defaul_name)
+            return(default_name)
 
         '''
         # Option 2
@@ -96,6 +98,7 @@ if __name__ == "__main__":
     # FOR TESTING
     # auto_continue test
     innnput = auto_continue("Testing:")
+    innnput = default(innnput, 'This is the default innnput.')
     print(innnput)
     print("Auto_continue test complete. Moving on...")
     '''
@@ -286,10 +289,8 @@ if __name__ == "__main__":
 
     print(timeout_ports)
 
+    # FOR TESTING
     # print(ip)
-    # ip = '10.11.2.110'
-    # ip = '127.0.0.1'
-    # ip = '140.192.40.120/30' # will scan 120,121,122,123
     for k in ip:
         ip = k
         for j in ipaddress.ip_network(ip):
@@ -338,9 +339,7 @@ if __name__ == "__main__":
                         try:
                             banner = s.recv(1024)
                             print(banner)
-                            print("Test 3a")
                         except:
-                            print("Test 3b")
                             pass
 
                         web_server(j,i)
