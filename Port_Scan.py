@@ -2,6 +2,7 @@
 
 '''
 #TO DO
+Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
 Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
 Exchange all rudimentary tests to actual feedback to the user
 Make code more modular (for a reason... Also, find that reason)
@@ -35,19 +36,24 @@ if __name__ == "__main__":
     info = 'At the current state of the program, you need to press Ctrl + C to auto_continue stuff.'
     print(info)
 
-    def auto_continue(prompt):
+    def auto_continue(prompt, time_to_wait_divided_by_10):
         print(prompt)
+        # If no input is given for the time to wait, the default-waiting-time is 10 seconds
+        time_to_wait_divided_by_10 = default(time_to_wait_divided_by_10, 1)
+
+        print("You have {} second(s) before the default value kicks in.".format(time_to_wait_divided_by_10*10))
+
         try:
-            for i in range(0, 1):
-                time_to_wait = 5
-                time.sleep(time_to_wait)
+            for i in range(0, 10):
+                time.sleep(time_to_wait_divided_by_10)
                 # FOR TESTING
                 # print(i)
-                if i == 1:
+                if i == 9:
                     print("Using default values...")
                     # FOR TESTING
                     # prompt = 'The time has outed.'
                 else:
+                    print('.', end='', flush=True)
                     pass
         except KeyboardInterrupt:
             prompt = input("\nInput: ")
@@ -223,7 +229,7 @@ if __name__ == "__main__":
             # ip = '140.192.40.120/32'
             # print("File Test")
 
-    scan = auto_continue("Would you like scan via inputting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ")
+    scan = auto_continue("Would you like scan via inputting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ", None)
     scan = default(scan, 'ip')
     print(scan)
 
