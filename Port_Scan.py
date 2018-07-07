@@ -1,7 +1,8 @@
 #NOTE: DO NOT TRUST SIMPLE HTTP SERVER
 
 '''
-#TO DO
+# TO DO
+Create a way to test all possible options with a single click (make whole program a function and provide a loop with different variables?)
 Read up on threading and timer to get rid of the KeyboardInterrupt for auto_continue
 Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
 Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
@@ -35,8 +36,8 @@ import socket, ipaddress, requests, sys, bs4, time, _thread, threading
 from termcolor import colored
 
 if __name__ == "__main__":
-    info = 'At the current state of the program, you need to press Ctrl + C to auto_continue stuff.'
-    print(info)
+    info = 'At the current state of the program, you need to press Ctrl + C to input stuff.'
+    print(colored(info, "yellow"))
 
     # Read up on threading and timer to get rid of the KeyboardInterrupt
     def auto_continue(prompt, time_to_wait_divided_by_10):
@@ -53,7 +54,7 @@ if __name__ == "__main__":
                 # FOR TESTING
                 # print(i)
                 if i == 9:
-                    print("Using default values...")
+                    print("Using default values.........")
                     # FOR TESTING
                     # prompt = 'The time has outed.'
                 else:
@@ -61,7 +62,7 @@ if __name__ == "__main__":
                     pass
         except KeyboardInterrupt:
             prompt = input("\nInput: ")
-            print("You input:{}.".format(prompt))
+            print(colored("You input:{}.".format(prompt)), "red")
             return(prompt)
 
     def default(default_name, default_value):
@@ -73,13 +74,14 @@ if __name__ == "__main__":
             return(default_name)
 
     def chosen_value(value):
-        chosen_value = colored("This is the value that will be used: {}.".format(value), "red")
+        chosen_value = colored("Value(s) used: {}.".format(value), "red")
         return(chosen_value)
 
     def web_server(ip,ports):
         web_socket = "http://{}:{}".format(str(j),str(i))
         timeout_web = auto_continue("What would you like the timeout to be for this web request in seconds? (Please choose a whole number between 1 and 100. Default: 5) ", None)
         timeout_web = default(timeout_web, '5')
+        print(chosen_value(timeout_web))
 
         print("Sending WebRequest to " + web_socket + " with a timeout of {}.".format(timeout_web))
 
@@ -128,6 +130,7 @@ if __name__ == "__main__":
         # Multi-website and 2-level directory testing
         website = auto_continue("Please input the website that you would like to scan! (e.g. google.com) ", None)
         website = default(website, "secdaemons.org")
+        print(chosen_value(website))
         directories = auto_continue("Please auto_continue the directories for the first level that you would like to scan divided by commas! (.e.g about,/,support,test) ", None)
         directories = default(directories, 'about,/,support,test,dokuwiki')
         directories = directories.split(",")
@@ -168,11 +171,13 @@ if __name__ == "__main__":
     def ip_scan():
         ip_in = auto_continue("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ", None)
         ip_in = default(ip_in, 'text')
+        print(chosen_value(ip_in))
         # Dangerous dangerous dangerous..... FIX NEEDED
         global ip
         if ip_in == 'terminal':
             ip = auto_continue("Please input the ip address/network that you would like to scan (e.g. 140.192.40.120/32) ", None)
             ip = default(ip, '140.192.40.120/32') # secdaemons.org
+            print(chosen_value(ip))
 
         elif ip_in == 'text':
             ipfile = auto_continue("Please input the name of the list that you would like to submit (e.g. \"iplist.txt\"): ", None)
@@ -181,7 +186,7 @@ if __name__ == "__main__":
             ip = ipfile.read()
             ipfile.close()
             ip = ip.split('\n')
-            print(ip)
+            print(chosen_value(ip))
 
     scan = auto_continue("Would you like scan via inputting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ", None)
     scan = default(scan, 'ip')
@@ -210,7 +215,7 @@ if __name__ == "__main__":
         ports = ports_single.split(',')
 
         f = 's'
-        print("SinglePorts: {}\n".format(ports))
+        print(chosen_value(ports))
 
     elif ans1 == 'range':
         ports_range = auto_continue("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please auto_continue like 443-444 to scan 443. ", None)
@@ -224,7 +229,7 @@ if __name__ == "__main__":
 
         f = 'r'
         # print(type(ports[0]))
-        print("RangePorts: {}\n".format(ports))
+        print(chosen_value(ports))
 
     elif ans1 == 'file':
         portsfile = auto_continue("What file would you like to use? (e.g. ports.txt) ", None)
@@ -237,12 +242,11 @@ if __name__ == "__main__":
         ports = ports.split('\n')
         f = 's'
         # print("FilePorts:{}".format(type(ports)))
-        print("FilePorts: {}\n".format(ports))
+        print(chosen_value(ports))
 
     timeout_ports = auto_continue("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ", None)
     timeout_ports = default(timeout_ports, '5')
-
-    print(timeout_ports)
+    print(chosen_value(timeout_ports))
 
     # FOR TESTING
     # print(ip)
@@ -300,7 +304,7 @@ if __name__ == "__main__":
                         print("This port is closed.\n")
                         pass
 
-            print("Summary/These ports are all open for {}:".format(j))
+            print(colored("Summary/These ports are all open for {}:".format(j), "white"))
             if len(open_ports) == 0:
                 print("NONE.\n")
             else:
