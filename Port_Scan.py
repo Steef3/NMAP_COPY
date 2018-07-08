@@ -2,6 +2,7 @@
 
 '''
 # TO DO
+If no input is given for the time to wait, the default-waiting-time is 10 seconds
 Create a way to test all possible options with a single click (make whole program a function and provide a loop with different variables?)
 Read up on threading and timer to get rid of the KeyboardInterrupt for auto_continue
 Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
@@ -36,21 +37,20 @@ import socket, ipaddress, requests, sys, bs4, time, _thread, threading
 from termcolor import colored
 
 if __name__ == "__main__":
-    info = 'At the current state of the program, you need to press Ctrl + C to input stuff.'
-    print(colored(info, "yellow"))
+
+    def chosen_value(value):
+        chosen_value = colored("Value(s) used: {}.".format(value), "red")
+        return(chosen_value)
 
     # Read up on threading and timer to get rid of the KeyboardInterrupt
-    def auto_continue(prompt, time_to_wait_divided_by_10):
+    def auto_continue(prompt, time_to_wait):
         print(prompt)
-        # If no input is given for the time to wait, the default-waiting-time is 10 seconds
-        default_time_divided_by_10 = 0.1
-        time_to_wait_divided_by_10 = default(time_to_wait_divided_by_10, default_time_divided_by_10)
 
-        print("You have {} second(s) before the default value kicks in.".format(time_to_wait_divided_by_10*10))
+        print("You have {} second(s) before the default value kicks in.".format(waitingtime))
 
         try:
             for i in range(0, 10):
-                time.sleep(time_to_wait_divided_by_10)
+                time.sleep(waitingtime/10)
                 # FOR TESTING
                 # print(i)
                 if i == 9:
@@ -72,10 +72,6 @@ if __name__ == "__main__":
         else:
             default_name = default_name
             return(default_name)
-
-    def chosen_value(value):
-        chosen_value = colored("Value(s) used: {}.".format(value), "red")
-        return(chosen_value)
 
     def web_server(ip,ports):
         web_socket = "http://{}:{}".format(str(j),str(i))
@@ -187,6 +183,13 @@ if __name__ == "__main__":
             ipfile.close()
             ip = ip.split('\n')
             print(chosen_value(ip))
+
+
+    info = 'At the current state of the program, you need to press Ctrl + C to input stuff, except for the time to wait value right after this line.'
+    print(colored(info, "yellow"))
+
+    waitingtime = int(input(colored("Please input the time in second(s) that the program should wait for inputs until going on with default values: ", "yellow")))
+    print(chosen_value(waitingtime))
 
     scan = auto_continue("Would you like scan via inputting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ", None)
     scan = default(scan, 'ip')
