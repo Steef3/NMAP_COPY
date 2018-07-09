@@ -38,11 +38,17 @@ from termcolor import colored
 
 if __name__ == "__main__":
 
+    ###########################################
+    # Display values that will be used in red #
+    ###########################################
     def chosen_value(value):
         chosen_value = colored("Value(s) used: {}.".format(value), "red")
         return(chosen_value)
 
     # Read up on threading and timer to get rid of the KeyboardInterrupt
+    ##############################################################################################
+    # Use a default value after a certain time, unless the user hits CTRL + C and inputs a value #
+    ##############################################################################################
     def auto_continue(prompt, time_to_wait):
         print(prompt)
 
@@ -65,6 +71,9 @@ if __name__ == "__main__":
             print(colored("You input:{}.".format(prompt)), "red")
             return(prompt)
 
+    ###############################################
+    # If no value is input, use the default value #
+    ###############################################
     def default(default_name, default_value):
         if default_name == None:
             default_name = default_value
@@ -73,6 +82,9 @@ if __name__ == "__main__":
             default_name = default_name
             return(default_name)
 
+    #########################################################
+    # Send a web request to root and interpret the response #
+    #########################################################
     def web_server(ip,ports):
         web_socket = "http://{}:{}".format(str(j),str(i))
         timeout_web = auto_continue("What would you like the timeout to be for this web request in seconds? (Please choose a whole number between 1 and 100. Default: 5) ", None)
@@ -122,6 +134,9 @@ if __name__ == "__main__":
             pass
         # For more info on status codes, please see http://www.restapitutorial.com/httpstatuscodes.html.
 
+    #########################################################################
+    # Send a web request to a specific directory and interpret the response #
+    #########################################################################
     def directory_scan():
         # Multi-website and 2-level directory testing
         website = auto_continue("Please input the website that you would like to scan! (e.g. google.com) ", None)
@@ -155,6 +170,9 @@ if __name__ == "__main__":
         print("Testing complete. Exiting.")
         sys.exit()
 
+    ########################################################################
+    # Get the ip address from a domain name and use that ip to do the scan #
+    ########################################################################
     def name_scan():
         name = auto_continue("What is the name of the website that you would like to scan? (e.g. google.com) ", None)
         name = default(name, 'secdaemons.org')
@@ -162,8 +180,10 @@ if __name__ == "__main__":
         global ip
         ip = socket.gethostbyname(name)
         ip = ip + '/32'
-        print(chosen_value(ip))
 
+    ########################################################################################
+    # Get the ip address form a text file or terminal input and use that ip to do the scan #
+    ########################################################################################
     def ip_scan():
         ip_in = auto_continue("Would you like to input an ip/network to scan via inputting into the terminal (terminal) or via a list in a text file (text)? ", None)
         ip_in = default(ip_in, 'text')
