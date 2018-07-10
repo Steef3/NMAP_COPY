@@ -2,6 +2,7 @@
 
 '''
 # TO DO
+Add a way to have multiple ranges at once, e.g. 79-81 and 440-445
 If no input is given for the time to wait, the default-waiting-time is 10 seconds
 Create a way to test all possible options with a single click (make whole program a function and provide a loop with different variables?)
 Read up on threading and timer to get rid of the KeyboardInterrupt for auto_continue
@@ -180,6 +181,7 @@ if __name__ == "__main__":
         global ip
         ip = socket.gethostbyname(name)
         ip = ip + '/32'
+        print(chosen_value(ip))
 
     ########################################################################################
     # Get the ip address form a text file or terminal input and use that ip to do the scan #
@@ -235,36 +237,31 @@ if __name__ == "__main__":
     if ans1 == 'single':
         ports_single = auto_continue("Please enter single ports separated by a comma (e.g. 80,443,3389) ", None)
         ports_single = default(ports_single, '80,443,8000')
-        ports = ports_single.split(',')
 
+        ports = ports_single.split(',')
         f = 's'
+
         print(chosen_value(ports))
 
     elif ans1 == 'range':
         ports_range = auto_continue("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please auto_continue like 443-444 to scan 443. ", None)
-        # FOR TESTING
-        ports_range = '443-444'
-        # ports_range = '442-444'
-        # ports_range = '0-65536'
-        # ports_range = '0-100'
-        # ports_range = '79-81'
-        ports = ports_range.split('-')
+        ports_range = defaul(ports_range, '441-444')
 
+        ports = ports_range.split('-')
         f = 'r'
-        # print(type(ports[0]))
+
         print(chosen_value(ports))
 
     elif ans1 == 'file':
-        portsfile = auto_continue("What file would you like to use? (e.g. ports.txt) ", None)
-        # FOR TESTING
-        portsfile = 'ports.txt'
+        ports_file = auto_continue("What file would you like to use? (e.g. ports.txt) ", None)
+        ports_file = default(ports_file, 'ports.txt')
 
-        portsfile = open(portsfile, 'r')
-        ports = portsfile.read()
-        portsfile.close()
+        ports_file = open(ports_file, 'r')
+        ports = ports_file.read()
+        ports_file.close()
         ports = ports.split('\n')
         f = 's'
-        # print("FilePorts:{}".format(type(ports)))
+
         print(chosen_value(ports))
 
     timeout_ports = auto_continue("What would you like the timeout be for the port scan in seconds? (Please choose a whole number between 1 and 100. Default: 5) ", None)
@@ -281,7 +278,6 @@ if __name__ == "__main__":
 
             # TCP SCAN - Single Ports
             if f == 's':
-
                 for i in ports:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.settimeout(float(timeout_ports))
@@ -329,7 +325,8 @@ if __name__ == "__main__":
 
             print(colored("Summary/These ports are all open for {}:".format(j), "white"))
             if len(open_ports) == 0:
-                print("NONE.\n")
+                print("NONE.\n---------------------------------------\n")
             else:
                 for i in open_ports:
                     print(i)
+                print("----------------------------------------\n")
