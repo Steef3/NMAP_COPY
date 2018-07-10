@@ -171,19 +171,20 @@ if __name__ == "__main__":
         print("Testing complete. Exiting.")
         sys.exit()
 
-    ########################################################################
-    # Get the ip address from a domain name and use that ip to do the scan #
-    ########################################################################
-    def name_scan():
-        name = auto_continue("What is the name of the website that you would like to scan? (e.g. google.com) ", None)
-        name = default(name, 'secdaemons.org')
-        # This is dangerous...
-        global ip
-        ip = socket.gethostbyname(name)
-        ip = ip + '/32'
-        print(chosen_value(ip))
+    #######################################
+    # Send customized packets using Scapy #
+    #######################################
+    # https://scapy.readthedocs.io/en/latest/installation.html
+    def hardcore_scan():
+        print("This mode will let you craft customized packets to send!")
 
-    ########################################################################################
+        dst = auto_continue("Please input the destination ip. ", None)
+        dst = default(dst, '192.168.1.1')
+        print(chosen_value(dst))
+
+        
+
+    #######################################################################################
     # Get the ip address form a text file or terminal input and use that ip to do the scan #
     ########################################################################################
     def ip_scan():
@@ -206,6 +207,17 @@ if __name__ == "__main__":
             ip = ip.split('\n')
             print(chosen_value(ip))
 
+    ########################################################################
+    # Get the ip address from a domain name and use that ip to do the scan #
+    ########################################################################
+    def name_scan():
+        name = auto_continue("What is the name of the website that you would like to scan? (e.g. google.com) ", None)
+        name = default(name, 'secdaemons.org')
+        # This is dangerous...
+        global ip
+        ip = socket.gethostbyname(name)
+        ip = ip + '/32'
+        print(chosen_value(ip))
 
     info = 'At the current state of the program, you need to press Ctrl + C to input stuff, except for the time to wait value right after this line.'
     print(colored(info, "yellow"))
@@ -213,21 +225,28 @@ if __name__ == "__main__":
     waitingtime = int(input(colored("Please input the time in second(s) that the program should wait for inputs until going on with default values: ", "yellow")))
     print(chosen_value(waitingtime))
 
-    scan = auto_continue("Would you like scan via inputting an IP (ip), via auto_continueting a website name (name) or would you like to test a website for directories (directory)? ", None)
-    scan = default(scan, 'ip')
+    scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore)? ", None)
+    scan = default(scan, 'ports')
     print(chosen_value(scan))
 
+    if scan == 'ports'
+        port_scan = auto_continue("Would you like to input an ip (ip) or a domain name (name)? ", None)
+        port_scan = default(port_scan, 'ip')
+        print(chosen_value(port_scan))
+
+        if port_scan == 'name':
+            name_scan()
+
+        # IP address port testing
+        elif port_scan == 'ip':
+            ip_scan()
+
     # Website directory testing
-    if scan == "directory":
+    elif scan == "directory":
         directory_scan()
 
-    # Domain name port testing
-    elif scan == 'name':
-        name_scan()
-
-    # IP address port testing
-    elif scan == 'ip':
-        ip_scan()
+    elif scan == "hardcore":
+        hardcore_scan()
 
     ans1 = auto_continue("Would you like to input single ports (single) or a range of ports (range) or single ports via a file (file)? ", None)
     ans1 = default(ans1, 'file')
