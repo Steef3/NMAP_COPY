@@ -2,10 +2,13 @@
 
 '''
 # TO DO
+Add graphs for open ports on various IPs
+Fix for default time wait: ValueError: invalid literal for int() with base 10: '0.1'
+Add an info for what flags for the customized packet scan are possible
 Add a way to have multiple ranges at once, e.g. 79-81 and 440-445
 If no input is given for the time to wait, the default-waiting-time is 10 seconds
 Create a way to test all possible options with a single click (make whole program a function and provide a loop with different variables?)
-Read up on threading and timer to get rid of the KeyboardInterrupt for auto_continue
+Read up on threading and tismer to get rid of the KeyboardInterrupt for auto_continue
 Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
 Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
 Exchange all rudimentary tests to actual feedback to the user
@@ -34,8 +37,10 @@ http://httpbin.org/status/418
 http://httpstat.us/418?sleep=5
 '''
 
-import socket, ipaddress, requests, sys, bs4, time, _thread, threading
+import socket, ipaddress, requests, sys, bs4, time
+# _thread, threading
 from termcolor import colored
+from scapy.all import *
 
 if __name__ == "__main__":
 
@@ -176,13 +181,36 @@ if __name__ == "__main__":
     #######################################
     # https://scapy.readthedocs.io/en/latest/installation.html
     def hardcore_scan():
-        print("This mode will let you craft customized packets to send!")
+        print("This mode will let you craft customized packets to send! At the moment, only IP packets are supported.")
 
-        dst = auto_continue("Please input the destination ip. ", None)
+        src = auto_continue("Please input the destination ip (Default: 192.168.5.100). ", None)
+        src = default(src, '192.168.5.100')
+        print(chosen_value(src))
+
+        dst = auto_continue("Please input the destination ip (Default: 192.168.1.1). ", None)
         dst = default(dst, '192.168.1.1')
         print(chosen_value(dst))
 
-        
+        ptype = auto_continue("Please specify what type of packet to scan (Default: TCP). ", None)
+        ptype = default(ptype, 'TCP')
+        print(chosen_value(ptype))
+
+        flags = auto_continue("Please input the flags that you would like to set without any commas (Default: S (for SYN)). ", None)
+        flags = default(flags, 'S')
+        print(chosen_value(flags))
+
+        dport = auto_continue("Please input the destination port (Default: 80). ", None)
+        dport = default(dport, 80)
+        print(chosen_value(dport))
+
+        if ptype == 'TCP':
+            send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+        elif ptype == 'UDP':
+            send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+        else:
+            print("Nope.")
+
+        sys.exit()
 
     #######################################################################################
     # Get the ip address form a text file or terminal input and use that ip to do the scan #
@@ -225,11 +253,11 @@ if __name__ == "__main__":
     waitingtime = int(input(colored("Please input the time in second(s) that the program should wait for inputs until going on with default values: ", "yellow")))
     print(chosen_value(waitingtime))
 
-    scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore)? ", None)
-    scan = default(scan, 'ports')
+    scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore) (Default: )? ", None)
+    scan = default(scan, 'hardcore')
     print(chosen_value(scan))
 
-    if scan == 'ports'
+    if scan == 'ports':
         port_scan = auto_continue("Would you like to input an ip (ip) or a domain name (name)? ", None)
         port_scan = default(port_scan, 'ip')
         print(chosen_value(port_scan))
@@ -264,7 +292,7 @@ if __name__ == "__main__":
 
     elif ans1 == 'range':
         ports_range = auto_continue("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please auto_continue like 443-444 to scan 443. ", None)
-        ports_range = defaul(ports_range, '441-444')
+        ports_range = default(ports_range, '441-444')
 
         ports = ports_range.split('-')
         f = 'r'
