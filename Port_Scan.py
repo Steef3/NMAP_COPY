@@ -41,6 +41,7 @@ import socket, ipaddress, requests, sys, bs4, time
 # _thread, threading
 from termcolor import colored
 from scapy.all import *
+from random import randint
 
 if __name__ == "__main__":
 
@@ -198,6 +199,10 @@ if __name__ == "__main__":
         flags = auto_continue("Please input the flags that you would like to set without any commas (Default: S (for SYN)). ", None)
         flags = default(flags, 'S')
         print(chosen_value(flags))
+
+        sport = auto_continue("Please input the destination port (Default: 80). ", None)
+        sport = default(sport, randint(1, 65535))
+        print(chosen_value(sport))
 
         dport = auto_continue("Please input the destination port (Default: 80). ", None)
         dport = default(dport, 80)
