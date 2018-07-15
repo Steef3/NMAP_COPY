@@ -6,8 +6,13 @@ Help is always appreciated!
 This program is written in Python 3 and not Python 2.
 Any ideas for additional features, any fixes to any of the infinite problems that are listed at the top of the main file or anything else will be helpful, thank you!
 
-## Files explained
+### Windows
+In order to use hardcore mode (i.e. scapy module), you need winpcap installed.
 
+### Mac OS
+I am rarely doing testing, but if I do, it's on Mac OS, for now.
+
+## Files explained
 ### Port_Scan.py
 This is the main program. Run this.
 ### modules_to_install
