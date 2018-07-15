@@ -10,6 +10,8 @@ Any ideas for additional features, any fixes to any of the infinite problems tha
 
 ### Port_Scan.py
 This is the main program. Run this.
+### modules_to_install
+These modules are required to run the program. Run this to install all modules at once.
 ### ports.txt
 This is a list of ports that can be used to define which ports to scan.
 ### ips.txt
