@@ -2,29 +2,26 @@
 
 '''
 # TO DO
+Add a more thorough summary and make it outputable as .txt or something
 Add graphs for open ports on various IPs
-Fix for default time wait: ValueError: invalid literal for int() with base 10: '0.1'
 Add an info for what flags for the customized packet scan are possible
 Add a way to have multiple ranges at once, e.g. 79-81 and 440-445
 If no input is given for the time to wait, the default-waiting-time is 10 seconds
 Create a way to test all possible options with a single click (make whole program a function and provide a loop with different variables?)
-Read up on threading and tismer to get rid of the KeyboardInterrupt for auto_continue
+Read up on threading and timers to get rid of the KeyboardInterrupt for auto_continue
 Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
 Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
-Exchange all rudimentary tests to actual feedback to the user
 Make code more modular (for a reason... Also, find that reason)
 Directory scan second level answer "no" not scanning anything and "yes" breaks the program...
 Better commenting needed throughout the code
 Make code super-clean (haha)
-Add a default for every input that is asked from the user
 Show default pathway at some point (e.g. ip -> single -> text and so on)
 Add function to the end of every task to ask, whether the user wants to do anything else
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
-auto_continue via text file/list of IPs.
-auto_continue cleaning for website entries (DNS), e.g. google.co is not possible
+Input cleaning for website entries (DNS), e.g. google.co is not possible
 Bypassed: RangePorts not working, when auto_continueting 443-443, for example.
 s.connect not working, if put into a function.
-Control+C not immediately exiting.
+Control+C not immediately exiting during trying of ports.
 Web requests will be sent to every port. Needs to be fixed. Problem: trying for banner times out, higher timeout (100) leads to b'' (without try statement)
 Program closes out, if no valid response from a web request.
 Open port but NO web server leads to exception of web server AND ports... (should only be for web)
@@ -168,13 +165,23 @@ if __name__ == "__main__":
             directories2 = ''
             print("No second-level directories specified.")
 
+        ssl = auto_continue("Do you trust this website? Requests will check for a certificate but might not find one. Inputting \'yes\' for this will NOT verify the certificate of the website. (Default: yes) ", None)
+        ssl = default(ssl, 'yes')
+        print(chosen_value(ssl))
+
+        if ssl == 'yes':
+            verify = False
+        else:
+            verify = True
+
         for directory in directories:
             for directory2 in directories2:
                 TestSocket = "https://" + website + "/" + directory + "/" + directory2
-                response = requests.get(TestSocket, timeout=5)
-                print("Testing {}/{}/{}!\t".format(website,directory,directory2),response)
+                print("Testing {}/{}/{}!".format(website,directory,directory2))
+                response = requests.get(TestSocket, timeout=5, verify=verify)
+                print("Response:{}!\n".format(response))
 
-        print("Testing complete. Exiting.")
+        print(colored("Testing complete. Exiting.", "yellow"))
         sys.exit()
 
     #######################################
@@ -252,10 +259,16 @@ if __name__ == "__main__":
         ip = ip + '/32'
         print(chosen_value(ip))
 
+    '''
+    ###########################
+    # THE PROGRAM STARTS HERE #
+    ###########################
+    '''
+
     info = 'At the current state of the program, you need to press Ctrl + C to input stuff, except for the time to wait value right after this line.'
     print(colored(info, "yellow"))
 
-    waitingtime = int(input(colored("Please input the time in second(s) that the program should wait for inputs until going on with default values: ", "yellow")))
+    waitingtime = float(input(colored("Please input the time in second(s) that the program should wait for inputs until going on with default values: ", "yellow")))
     print(chosen_value(waitingtime))
 
     scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore) (Default: )? ", None)
