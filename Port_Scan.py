@@ -12,7 +12,7 @@ Read up on threading and timers to get rid of the KeyboardInterrupt for auto_con
 Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
 Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
 Make code more modular (for a reason... Also, find that reason)
-Directory scan second level answer "no" not scanning anything and "yes" breaks the program...
+Make directory-scanning scalable
 Better commenting needed throughout the code
 Make code super-clean (haha)
 Show default pathway at some point (e.g. ip -> single -> text and so on)
@@ -151,8 +151,8 @@ if __name__ == "__main__":
         directories = directories.split(",")
         print(chosen_value(directories))
         level_2 = auto_continue("Would you like to scan a second layer of directories? (yes/no) ", None)
-        level_2 = 'YeS'
-        # level_2 = 'nO'
+        # level_2 = 'YeS'
+        level_2 = 'nO'
         level_2 = level_2.lower()
         print(chosen_value(level_2))
         if level_2 == 'yes':
@@ -174,12 +174,19 @@ if __name__ == "__main__":
         else:
             verify = True
 
-        for directory in directories:
-            for directory2 in directories2:
-                TestSocket = "https://" + website + "/" + directory + "/" + directory2
-                print("Testing {}/{}/{}!".format(website,directory,directory2))
+        if directories2 == '':
+            for directory in directories:
+                TestSocket = "https://" + website + "/" + directory
+                print("Testing {}/{}!".format(website,directory))
                 response = requests.get(TestSocket, timeout=5, verify=verify)
                 print("Response:{}!\n".format(response))
+        else:
+            for directory in directories:
+                for directory2 in directories2:
+                    TestSocket = "https://" + website + "/" + directory + "/" + directory2
+                    print("Testing {}/{}/{}!".format(website,directory,directory2))
+                    response = requests.get(TestSocket, timeout=5, verify=verify)
+                    print("Response:{}!\n".format(response))
 
         print(colored("Testing complete. Exiting.", "yellow"))
         sys.exit()
@@ -272,7 +279,7 @@ if __name__ == "__main__":
     print(chosen_value(waitingtime))
 
     scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore) (Default: )? ", None)
-    scan = default(scan, 'hardcore')
+    scan = default(scan, 'directory')
     print(chosen_value(scan))
 
     if scan == 'ports':
