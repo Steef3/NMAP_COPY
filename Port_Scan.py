@@ -2,6 +2,7 @@
 
 '''
 # TO DO
+Implement secret stuff/Easter eggs!!!
 Add a more thorough summary and make it outputable as .txt or something
 Add graphs for open ports on various IPs
 Add an info for what flags for the customized packet scan are possible
@@ -19,7 +20,7 @@ Show default pathway at some point (e.g. ip -> single -> text and so on)
 Add function to the end of every task to ask, whether the user wants to do anything else
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
 Input cleaning for website entries (DNS), e.g. google.co is not possible
-Bypassed: RangePorts not working, when auto_continueting 443-443, for example.
+Bypassed: RangePorts not working, when inputting 443-443, for example.
 s.connect not working, if put into a function.
 Control+C not immediately exiting during trying of ports.
 Web requests will be sent to every port. Needs to be fixed. Problem: trying for banner times out, higher timeout (100) leads to b'' (without try statement)
@@ -74,6 +75,17 @@ if __name__ == "__main__":
             prompt = input("\nInput: ")
             print(colored("You input:{}.".format(prompt)), "red")
             return(prompt)
+
+    ######################################################
+    # Check for a banner and if none, set banner to none #
+    ######################################################
+    def banner():
+        try:
+            banner = s.recv(1024)
+            print(banner)
+        except:
+            banner = ''
+            pass
 
     ###############################################
     # If no value is input, use the default value #
@@ -151,8 +163,7 @@ if __name__ == "__main__":
         directories = directories.split(",")
         print(chosen_value(directories))
         level_2 = auto_continue("Would you like to scan a second layer of directories? (yes/no) ", None)
-        # level_2 = 'YeS'
-        level_2 = 'nO'
+        level_2 = default(level_2, 'YeS')
         level_2 = level_2.lower()
         print(chosen_value(level_2))
         if level_2 == 'yes':
@@ -190,6 +201,16 @@ if __name__ == "__main__":
 
         print(colored("Testing complete. Exiting.", "yellow"))
         sys.exit()
+
+
+    ##############################
+    # Send a web request or not? #
+    ##############################
+    def do_web_server():
+        if banner == '':
+            web_server(j,i)
+        else:
+            print(banner)
 
     #######################################
     # Send customized packets using Scapy #
@@ -279,7 +300,7 @@ if __name__ == "__main__":
     print(chosen_value(waitingtime))
 
     scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore) (Default: )? ", None)
-    scan = default(scan, 'directory')
+    scan = default(scan, 'ports')
     print(chosen_value(scan))
 
     if scan == 'ports':
@@ -359,13 +380,8 @@ if __name__ == "__main__":
                         print("Port Connection Test Single successful.")
                         open_ports.append(i)
 
-                        try:
-                            banner = s.recv(1024)
-                            print(banner)
-                        except:
-                            pass
-
-                        web_server(j,i)
+                        banner()
+                        do_web_server()
 
                     except:
                         print("This port is closed.\n")
@@ -383,13 +399,8 @@ if __name__ == "__main__":
                         print("Port Connection Test Range successful.")
                         open_ports.append(i)
 
-                        try:
-                            banner = s.recv(1024)
-                            print(banner)
-                        except:
-                            pass
-
-                        web_server(j,i)
+                        banner()
+                        do_web_server()
 
                     except:
                         print("This port is closed.\n")
