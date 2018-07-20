@@ -328,12 +328,12 @@ if __name__ == "__main__":
     elif scan == "hardcore":
         hardcore_scan()
 
-    ans1 = auto_continue("Would you like to input single ports (single) or a range of ports (range) or single ports via a file (file)? ", None)
-    ans1 = default(ans1, 'file')
-    ans1 = ans1.lower()
-    print(chosen_value(ans1))
+    input_type = auto_continue("Would you like to input single ports (single) or a range of ports (range) or single ports via a file (file)? ", None)
+    input_type = default(input_type, 'file')
+    input_type = input_type.lower()
+    print(chosen_value(input_type))
 
-    if ans1 == 'single':
+    if input_type == 'single':
         ports_single = auto_continue("Please enter single ports separated by a comma (e.g. 80,443,3389) ", None)
         ports_single = default(ports_single, '80,443,8000')
 
@@ -342,7 +342,7 @@ if __name__ == "__main__":
 
         print(chosen_value(ports))
 
-    elif ans1 == 'range':
+    elif input_type == 'range':
         ports_range = auto_continue("Please enter a range of ports (e.g. 100-500). If you want to only scan one port, please auto_continue like 443-444 to scan 443. ", None)
         ports_range = default(ports_range, '441-444')
 
@@ -351,7 +351,7 @@ if __name__ == "__main__":
 
         print(chosen_value(ports))
 
-    elif ans1 == 'file':
+    elif input_type == 'file':
         ports_file = auto_continue("What file would you like to use? (e.g. ports.txt) ", None)
         ports_file = default(ports_file, 'ports.txt')
 
@@ -419,3 +419,7 @@ if __name__ == "__main__":
                 for i in open_ports:
                     print(i)
                 print("----------------------------------------\n")
+
+    output = auto_continue("Would you like to output the summaries in a file? ", None)
+    output = default(output, 'yes')
+
