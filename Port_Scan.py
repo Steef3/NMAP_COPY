@@ -140,6 +140,12 @@ if __name__ == "__main__":
                 print("Code: 418, I'm a teapot.")
             elif response.status_code == 500:
                 print("Code: 500, Internal Server Error.")
+            elif response.status_code == 502:
+                print("Code: 502, Bad Gateway.")
+            elif response.status_code == 503:
+                print("Code: 503, Service Unavailable.")
+            elif response.status_code == 504:
+                print("Code: 504, Gateway Timeout.")
             print("\n")
 
         except:
