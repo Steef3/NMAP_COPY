@@ -420,6 +420,15 @@ if __name__ == "__main__":
                     print(i)
                 print("----------------------------------------\n")
 
-    output = auto_continue("Would you like to output the summaries in a file? ", None)
-    output = default(output, 'yes')
+    output = auto_continue("Would you like to output the summaries in a file (yes/no)? ", None)
+    output = default(output, 'yEs')
+    output = lower.output()
+
+    if output == 'yes':
+        print("Creating file...")
+    elif output == 'no':
+        print("Continuing...")
+    else:
+        print("Please provide a valid input.")
+
 
