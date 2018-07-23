@@ -226,7 +226,7 @@ if __name__ == "__main__":
         print("This mode will let you craft customized packets to send! At the moment, only IP packets are supported.")
 
         src = auto_continue("Please input the destination ip (Default: 192.168.5.100). ", None)
-        src = default(src, '192.168.5.100')
+        src = default(src, '192.168.1.28')
         print(chosen_value(src))
 
         dst = auto_continue("Please input the destination ip (Default: 192.168.1.1). ", None)
@@ -257,7 +257,7 @@ if __name__ == "__main__":
             if send_type == 'send':
                 send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
             elif send_type == 'sr':
-                sr(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                sr1(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
             else:
                 print("You did not specify send or send and receive correctly. Exiting.")
                 sys.exit()
@@ -265,7 +265,7 @@ if __name__ == "__main__":
             if send_type == 'send':
                 send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
             elif send_type == 'sr':
-                sr(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                sr1(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
             else:
                 print("You did not specify send or send and receive correctly. Exiting.")
                 sys.exit()
