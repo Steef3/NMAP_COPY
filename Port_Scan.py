@@ -249,10 +249,26 @@ if __name__ == "__main__":
         dport = default(dport, 80)
         print(chosen_value(dport))
 
+        send_type = auto_continue("Would you like to only send (send) or send and receive packets (sr)? ", None)
+        send_type = default(send_type, 'sr')
+        print(chosen_value(send_type))
+
         if ptype == 'TCP':
-            send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+            if send_type == 'send':
+                send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+            elif send_type == 'sr':
+                sr(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+            else:
+                print("You did not specify send or send and receive correctly. Exiting.")
+                sys.exit()
         elif ptype == 'UDP':
-            send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+            if send_type == 'send':
+                send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+            elif send_type == 'sr':
+                sr(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+            else:
+                print("You did not specify send or send and receive correctly. Exiting.")
+                sys.exit()
         else:
             print("Nope.")
 
@@ -306,7 +322,7 @@ if __name__ == "__main__":
     print(chosen_value(waitingtime))
 
     scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore) (Default: )? ", None)
-    scan = default(scan, 'ports')
+    scan = default(scan, 'hardcore')
     print(chosen_value(scan))
 
     if scan == 'ports':
