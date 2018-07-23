@@ -255,17 +255,25 @@ if __name__ == "__main__":
 
         if ptype == 'TCP':
             if send_type == 'send':
-                send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                packet_sent = send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                print("This is the packet that has been received:\n")
+                packet_sent.show()
             elif send_type == 'sr':
-                sr1(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                packet_sent = sr1(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                print("This is the packet that has been received:\n")
+                packet_sent.show()
             else:
                 print("You did not specify send or send and receive correctly. Exiting.")
                 sys.exit()
         elif ptype == 'UDP':
             if send_type == 'send':
-                send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                packet_sent = send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                print("This is the packet that has been received:\n")
+                packet_sent.show()
             elif send_type == 'sr':
-                sr1(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                packet_sent = sr1(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                print("This is the packet that has been received:\n")
+                packet_sent.show()
             else:
                 print("You did not specify send or send and receive correctly. Exiting.")
                 sys.exit()
