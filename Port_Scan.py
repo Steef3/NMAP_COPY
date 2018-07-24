@@ -237,7 +237,24 @@ if __name__ == "__main__":
         ptype = default(ptype, 'TCP')
         print(chosen_value(ptype))
 
-        flags = auto_continue("Please input the flags that you would like to set without any commas (Default: S (for SYN)). ", None)
+        flags = auto_continue("Please input the flags that you would like to set without any commas (Default: S (for SYN)). If you would like to see a list of possible flags, please type in \'flags\'! ", None)
+        # flags = 'flags'
+        if flags == 'flags':
+            flag_list = (
+            'S = SYN – The SYN, or Synchronisation flag, is used as a first step in establishing a 3-way handshake between two hosts. Only the first packet from both the sender and receiver should have this flag set. The following diagram illustrates a 3-way handshake process. 3 step tcp handshake',
+            'A = ACK – The ACK flag, which stands for “Acknowledgment”, is used to acknowledge the successful receipt of a packet. As we can see from the diagram above, the receiver sends an ACK as well as a SYN in the second step of the 3-way handshake process to tell the sender that it received its initial packet.',
+            'F = FIN – The FIN flag, which stands for “Finished”, means there is no more data from the sender. Therefore, it is used in the last packet sent from the sender.',
+            'U = URG – The URG flag is used to notify the receiver to process the urgent packets before processing all other packets. The receiver will be notified when all known urgent data has been received. See RFC 6093 for more details.',
+            'P = PSH – The PSH flag, which stands for “Push”, is somewhat similar to the URG flag and tells the receiver to process these packets as they are received instead of buffering them.',
+            'R = RST – The RST flag, which stands for “Reset”, gets sent from the receiver to the sender when a packet is sent to a particular host that was not expecting it.',
+            'E = ECE – This flag is responsible for indicating if the TCP peer is ECN capable. See RFC 3168 for more details.',
+            'C = CWR – The CWR flag, which stands for Congestion Window Reduced, is used by the sending host to indicate it received a packet with the ECE flag set. See RFC 3168 for more details.',
+            'N = NS (experimental) – The NS flag, which stands for Nonce Sum, is still an experimental flag used to help protect against accidental malicious concealment of packets from the sender. See RFC 3540 for more details.',
+            'Source: https://www.keycdn.com/support/tcp-flags/'
+            )
+            for i in flag_list:
+                print(i)
+        # flags = 'S'
         flags = default(flags, 'S')
         print(chosen_value(flags))
 
@@ -249,7 +266,7 @@ if __name__ == "__main__":
         dport = default(dport, 80)
         print(chosen_value(dport))
 
-        send_type = auto_continue("Would you like to only send (send) or send and receive packets (sr)? ", None)
+        send_type = auto_continue("Would you like to only send (send) or send and receive packets (sr) (Default: sr)? ", None)
         send_type = default(send_type, 'sr')
         print(chosen_value(send_type))
 
