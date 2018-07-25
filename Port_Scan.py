@@ -282,9 +282,10 @@ if __name__ == "__main__":
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             elif send_type == 'sr':
-                packet_sent = sr1(IP(IP)/TCP(dport=dport,flags=flags))
+                packet_sent = sr1(IP(src=src,dst=dst,ttl=ttl)/TCP(dport=dport,flags=flags))
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
+                packet_sent[0].pdfdump(layer_shift=1)
             else:
                 print("You did not specify send or send and receive correctly. Exiting.")
         elif ptype == 'UDP':
