@@ -1,6 +1,9 @@
 import os
 
-modules = "ipaddress, requests, beautifulsoup4, termcolor, scapy"
+print("Upgrading pip...")
+os.system("pip3 install --upgrade pip")
+
+modules = "ipaddress, requests, beautifulsoup4, termcolor, scapy, pyx"
 modules_split = modules.split(", ")
 
 for i in modules_split:
