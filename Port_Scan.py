@@ -2,6 +2,7 @@
 
 '''
 # TO DO
+Have TCP/UDP misinput be shown right after the input, not at the else statement way after inputting other things
 Implement secret stuff/Easter eggs!!!
 Add a more thorough summary and make it outputable as .txt or something
 Add graphs for open ports on various IPs
@@ -39,6 +40,7 @@ import socket, ipaddress, requests, sys, bs4, time
 # _thread, threading
 from termcolor import colored
 from scapy.all import *
+from pyx import *
 from random import randint
 
 if __name__ == "__main__":
@@ -280,12 +282,11 @@ if __name__ == "__main__":
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             elif send_type == 'sr':
-                packet_sent = sr1(IP(src=src,dst=dst,ttl=ttl)/TCP(dport=dport,flags=flags))
+                packet_sent = sr1(IP(IP)/TCP(dport=dport,flags=flags))
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             else:
                 print("You did not specify send or send and receive correctly. Exiting.")
-                sys.exit()
         elif ptype == 'UDP':
             if send_type == 'send':
                 packet_sent = send(IP(src=src,dst=dst,ttl=ttl)/UDP(dport=dport,flags=flags))
@@ -296,10 +297,10 @@ if __name__ == "__main__":
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             else:
-                print("You did not specify send or send and receive correctly. Exiting.")
-                sys.exit()
+                print("You did not specify send or send/receive correctly. Exiting.")
         else:
-            print("Nope.")
+            # Have this show up earlier, right after TCP and UDP need to be input
+            print("You did not specify TCP or UDP correctly. Exiting.")
 
         sys.exit()
 
