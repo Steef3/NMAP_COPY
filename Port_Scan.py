@@ -233,6 +233,10 @@ if __name__ == "__main__":
         dst = default(dst, '192.168.1.1')
         print(chosen_value(dst))
 
+        ttl = auto_continue("What would you like the ttl to be (Default: 64)? ", None)
+        ttl = default(ttl, 64)
+        print(chosen_value(ttl))
+
         ptype = auto_continue("Please specify what type of packet to scan (Default: TCP). ", None)
         ptype = default(ptype, 'TCP')
         print(chosen_value(ptype))
@@ -272,11 +276,11 @@ if __name__ == "__main__":
 
         if ptype == 'TCP':
             if send_type == 'send':
-                packet_sent = send(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                packet_sent = send(IP(src=src,dst=dst,ttl=ttl)/TCP(dport=dport,flags=flags))
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             elif send_type == 'sr':
-                packet_sent = sr1(IP(src=src,dst=dst)/TCP(dport=dport,flags=flags))
+                packet_sent = sr1(IP(src=src,dst=dst,ttl=ttl)/TCP(dport=dport,flags=flags))
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             else:
@@ -284,11 +288,11 @@ if __name__ == "__main__":
                 sys.exit()
         elif ptype == 'UDP':
             if send_type == 'send':
-                packet_sent = send(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                packet_sent = send(IP(src=src,dst=dst,ttl=ttl)/UDP(dport=dport,flags=flags))
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             elif send_type == 'sr':
-                packet_sent = sr1(IP(src=src,dst=dst)/UDP(dport=dport,flags=flags))
+                packet_sent = sr1(IP(src=src,dst=dst,ttl=ttl)/UDP(dport=dport,flags=flags))
                 print("This is the packet that has been received:\n")
                 packet_sent.show()
             else:
