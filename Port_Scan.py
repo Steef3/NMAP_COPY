@@ -353,20 +353,25 @@ if __name__ == "__main__":
     print(chosen_value(waitingtime))
 
     scan = auto_continue("Would you like scan ports (ports), test a website for directories (directory) or go into hardcore mode (hardcore) (Default: )? ", None)
-    scan = default(scan, 'hardcore')
+    scan = default(scan, 'ports')
     print(chosen_value(scan))
 
     if scan == 'ports':
+        global port_scan
         port_scan = auto_continue("Would you like to input an ip (ip) or a domain name (name)? ", None)
         port_scan = default(port_scan, 'ip')
         print(chosen_value(port_scan))
 
-        if port_scan == 'name':
+        # IP port testing
+        if port_scan == 'ip':
+            ip_scan()
+
+        elif port_scan == 'name':
             name_scan()
 
-        # IP address port testing
-        elif port_scan == 'ip':
-            ip_scan()
+        else:
+            print("Invalid response. Exiting.")
+            sys.exit()
 
     # Website directory testing
     elif scan == "directory":
@@ -442,22 +447,24 @@ if __name__ == "__main__":
 
             # TCP SCAN - Range Ports/File Ports
             elif f == 'r':
-                for i in range(int(ports[0]),int(ports[1])):
-                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s.settimeout(float(timeout_ports))
-                    print("Trying {}:{}.".format(j,i))
+                for l in ports:
+                    ports = ports[l]
+                    for i in range(int(ports[0]),int(ports[1])):
+                        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        s.settimeout(float(timeout_ports))
+                        print("Trying {}:{}.".format(j,i))
 
-                    try:
-                        s.connect((j,int(i)))
-                        print("Port Connection Test Range successful.")
-                        open_ports.append(i)
+                        try:
+                            s.connect((j,int(i)))
+                            print("Port Connection Test Range successful.")
+                            open_ports.append(i)
 
-                        banner()
-                        do_web_server()
+                            banner()
+                            do_web_server()
 
-                    except:
-                        print("This port is closed.\n")
-                        pass
+                        except:
+                            print("This port is closed.\n")
+                            pass
 
             print(colored("Summary/These ports are all open for {}:".format(j), "white"))
             if len(open_ports) == 0:
