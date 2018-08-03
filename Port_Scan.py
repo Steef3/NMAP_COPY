@@ -111,8 +111,6 @@ if __name__ == "__main__":
 
         try:
             response = requests.get(web_socket,timeout=int(timeout_web),verify=False)
-            print(response)
-            sys.exit()
             print("There is a web_server at {} on port {}.".format(str(ip),str(ports)))
             headers = response.headers
             print("This is a(n) {}".format(headers['Server']),"server.")
