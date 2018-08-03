@@ -13,7 +13,6 @@ Create a way to test all possible options with a single click (make whole progra
 Read up on threading and timers to get rid of the KeyboardInterrupt for auto_continue
 Since no one wants a slow program, consider speed more as soon as you become a pro (will that ever happen? Lol)
 Since this is a security program, consider security more (i.e. global ip removed, importing only stuff that is necessay, etc.)
-Make code more modular (for a reason... Also, find that reason)
 Make directory-scanning scalable
 Better commenting needed throughout the code
 Make code super-clean (haha)
@@ -22,9 +21,8 @@ Add function to the end of every task to ask, whether the user wants to do anyth
 Make directory responses show up cleaner in the terminal/independent of how long the directory name is
 Input cleaning for website entries (DNS), e.g. google.co is not possible
 Bypassed: RangePorts not working, when inputting 443-443, for example.
-s.connect not working, if put into a function.
 Control+C not immediately exiting during trying of ports.
-Web requests will be sent to every port. Needs to be fixed. Problem: trying for banner times out, higher timeout (100) leads to b'' (without try statement)
+Web requests will be sent to every port. Needs to be fixed. Problem: trying for banner times out, higher timeout (100) leads to b'' (without try statement); fix banner()
 Program closes out, if no valid response from a web request.
 Open port but NO web server leads to exception of web server AND ports... (should only be for web)
 Fix global ip in if-statement
@@ -83,7 +81,7 @@ if __name__ == "__main__":
     ######################################################
     def banner():
         try:
-            banner = s.recv(1024)
+            banner = s.recv(4096)
             print(banner)
         except:
             banner = ''
@@ -112,7 +110,9 @@ if __name__ == "__main__":
         print("Sending WebRequest to " + web_socket + " with a timeout of {}.".format(timeout_web))
 
         try:
-            response = requests.get(web_socket,timeout=int(timeout_web))
+            response = requests.get(web_socket,timeout=int(timeout_web),verify=False)
+            print(response)
+            sys.exit()
             print("There is a web_server at {} on port {}.".format(str(ip),str(ports)))
             headers = response.headers
             print("This is a(n) {}".format(headers['Server']),"server.")
@@ -438,7 +438,8 @@ if __name__ == "__main__":
                         print("Port Connection Test Single successful.")
                         open_ports.append(i)
 
-                        banner()
+                        #banner()
+                        banner = ''
                         do_web_server()
 
                     except:
@@ -459,7 +460,8 @@ if __name__ == "__main__":
                             print("Port Connection Test Range successful.")
                             open_ports.append(i)
 
-                            banner()
+                            #banner()
+                            banner = ''
                             do_web_server()
 
                         except:
