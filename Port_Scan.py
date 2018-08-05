@@ -34,7 +34,7 @@ http://httpbin.org/status/418
 http://httpstat.us/418?sleep=5
 '''
 
-import socket, ipaddress, requests, sys, bs4, time
+import socket, ipaddress, requests, sys, bs4, time, re
 # _thread, threading
 from termcolor import colored
 from scapy.all import *
@@ -332,6 +332,8 @@ if __name__ == "__main__":
     def name_scan():
         name = auto_continue("What is the name of the website that you would like to scan? (e.g. google.com) ", None)
         name = default(name, 'secdaemons.org')
+        regex = 
+
         # This is dangerous...
         global ip
         ip = socket.gethostbyname(name)
