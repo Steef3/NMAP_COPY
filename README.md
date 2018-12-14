@@ -1,3 +1,7 @@
+IMPORTANT NOTE:
+Right now, the program is optimized for testing and not for usage.
+
+
 # pythonmap
 This program's functionalities are based on nmap.
 Help is always appreciated!
@@ -11,6 +15,7 @@ In order to use hardcore mode (i.e. scapy module), you need winpcap installed.
 
 ### Mac OS
 I am rarely doing testing, but if I do, it's on Mac OS, for now.
+Ok to tell the truth, most of my time is invested in testing.
 
 ## Files explained
 ### Port_Scan.py
